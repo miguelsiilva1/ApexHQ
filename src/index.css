@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#F5F5F0] text-f1-dark transition-colors duration-300;
+    overflow-y: scroll;
+  }
+  .dark body {
+    @apply bg-f1-dark text-f1-light-gray;
+  }
+}

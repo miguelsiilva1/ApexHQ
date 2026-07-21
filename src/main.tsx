@@ -3,18 +3,16 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 
-// Importar Layout e Páginas
 import MainLayout from './layouts/MainLayout'
 import Home from './pages/Home'
 import Pilotos from './pages/Pilotos'
 import Classificacoes from './pages/Classificacoes'
 import Calendario from './pages/Calendario'
 
-// Configuração das Rotas
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />, // O nosso "esqueleto" com navbar
+    element: <MainLayout />,
     children: [
       {
         path: '/',

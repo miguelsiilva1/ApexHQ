@@ -12,6 +12,7 @@ export default {
         'f1-red': '#FF1E00',
         'f1-dark': '#0D0D0D', 
         'f1-light-gray': '#C0C0C0',
+        'f1-light': '#F5F5F0',
       },
       // By Miguel Silva
       fontFamily: {

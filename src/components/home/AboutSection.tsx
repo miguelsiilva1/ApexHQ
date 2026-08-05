@@ -1,12 +1,14 @@
+import { useTranslation } from 'react-i18next';
+
 const AboutSection = () => {
+  const { t } = useTranslation();
   return (
     <section className={styles.aboutSection}>
-      <h2 className={styles.sectionTitleCenter}>Sobre a ApexHQ</h2>
+      <h2 className={styles.sectionTitleCenter}>{t('about.title')}</h2>
       <p className={styles.aboutText}>
-        A ApexHQ é o teu hub definitivo para tudo relacionado com a Fórmula 1. 
-        Estatísticas detalhadas, análises de corrida, e cobertura em tempo real das temporadas.
+        {t('about.text')}
       </p>
-      <a href="#" className={styles.btnTransparentDark}>Conhecer a Equipa / Criador</a>
+      <a href="#" className={styles.btnTransparentDark}>{t('about.button')}</a>
     </section>
   );
 };

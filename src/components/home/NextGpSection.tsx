@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { service } from '../../services';
 import { LoadingSpinner, ErrorAlert } from '../';
+import { useTranslation } from 'react-i18next';
 
 const NextGpSection = () => {
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [raceData, setRaceData] = useState<any>(null);
@@ -16,10 +18,10 @@ const NextGpSection = () => {
       if (nextRace) {
         setRaceData(nextRace);
       } else {
-        setError('Não foi possível encontrar dados sobre a próxima corrida.');
+        setError(t('next_gp.error_not_found'));
       }
     } catch (err) {
-      setError('Ocorreu um erro ao ligar aos servidores da F1. Tenta novamente mais tarde.');
+      setError(t('next_gp.error_server'));
     } finally {
       setLoading(false);
     }
@@ -31,16 +33,17 @@ const NextGpSection = () => {
 
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);
-    return new Intl.DateTimeFormat('pt-PT', { day: '2-digit', month: 'short' }).format(d);
+    return new Intl.DateTimeFormat(i18n.language === 'en' ? 'en-US' : 'pt-PT', { day: '2-digit', month: 'short' }).format(d);
   };
 
   const formatDateTime = (dateStr?: string, timeStr?: string) => {
     if (!dateStr || !timeStr) return '--:--';
     try {
+      const locale = i18n.language === 'en' ? 'en-US' : 'pt-PT';
       const d = new Date(`${dateStr}T${timeStr}`);
-      const dayName = new Intl.DateTimeFormat('pt-PT', { weekday: 'short' }).format(d).replace('.', '');
+      const dayName = new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(d).replace('.', '');
       const dayNameCapitalized = dayName.charAt(0).toUpperCase() + dayName.slice(1);
-      const dayNum = new Intl.DateTimeFormat('pt-PT', { day: '2-digit' }).format(d);
+      const dayNum = new Intl.DateTimeFormat(locale, { day: '2-digit' }).format(d);
       const time = timeStr.substring(0, 5);
       return `${dayNameCapitalized} ${dayNum}, ${time}`;
     } catch (e) {
@@ -50,7 +53,7 @@ const NextGpSection = () => {
 
   return (
     <section id="next-gp-section" className={styles.nextGpSection}>
-      <h2 className={styles.sectionTitle}>Próximo GP</h2>
+      <h2 className={styles.sectionTitle}>{t('next_gp.title')}</h2>
       <div className={styles.nextGpContainer}>
         <div className={styles.nextGpCard}>
           {loading ? (
@@ -64,17 +67,17 @@ const NextGpSection = () => {
           ) : raceData ? (
             <>
               <div className={styles.gpHeader}>
-                <h3 className={styles.gpName}>{raceData.raceName}</h3>
+                <h3 className={styles.gpName}>{t(`api.gps.${raceData.raceName}`, raceData.raceName) as string}</h3>
                 <p className={styles.gpDate}>
                   {raceData.FirstPractice ? formatDate(raceData.FirstPractice.date) : formatDate(raceData.date)} - {formatDate(raceData.date)}, {raceData.season}
                 </p>
-                <p className="font-inter text-xs opacity-75 mt-1">{raceData.Circuit.circuitName}, {raceData.Circuit.Location.country}</p>
+                <p className="font-inter text-xs opacity-75 mt-1">{raceData.Circuit.circuitName}, {t(`api.countries.${raceData.Circuit.Location.country}`, raceData.Circuit.Location.country) as string}</p>
               </div>
               <div className={styles.gpSessions}>
                 {/* First Practice */}
                 {raceData.FirstPractice && (
                   <div className={styles.session}>
-                    <span className={styles.sessionName}>Treino Livre 1</span>
+                    <span className={styles.sessionName}>{t('next_gp.sessions.fp1')}</span>
                     <span className={styles.sessionTime}>{formatDateTime(raceData.FirstPractice.date, raceData.FirstPractice.time)}</span>
                   </div>
                 )}
@@ -83,7 +86,7 @@ const NextGpSection = () => {
                 {raceData.Sprint ? (
                   <>
                     <div className={styles.session}>
-                      <span className={styles.sessionName}>Qualificação Sprint</span>
+                      <span className={styles.sessionName}>{t('next_gp.sessions.sprint_qualifying')}</span>
                       <span className={styles.sessionTime}>
                         {formatDateTime(
                           (raceData.SprintQualifying || raceData.SprintShootout || raceData.SecondPractice)?.date, 
@@ -92,7 +95,7 @@ const NextGpSection = () => {
                       </span>
                     </div>
                     <div className={styles.session}>
-                      <span className={styles.sessionName}>Sprint</span>
+                      <span className={styles.sessionName}>{t('next_gp.sessions.sprint')}</span>
                       <span className={styles.sessionTime}>{formatDateTime(raceData.Sprint.date, raceData.Sprint.time)}</span>
                     </div>
                   </>
@@ -100,13 +103,13 @@ const NextGpSection = () => {
                   <>
                     {raceData.SecondPractice && (
                       <div className={styles.session}>
-                        <span className={styles.sessionName}>Treino Livre 2</span>
+                        <span className={styles.sessionName}>{t('next_gp.sessions.fp2')}</span>
                         <span className={styles.sessionTime}>{formatDateTime(raceData.SecondPractice.date, raceData.SecondPractice.time)}</span>
                       </div>
                     )}
                     {raceData.ThirdPractice && (
                       <div className={styles.session}>
-                        <span className={styles.sessionName}>Treino Livre 3</span>
+                        <span className={styles.sessionName}>{t('next_gp.sessions.fp3')}</span>
                         <span className={styles.sessionTime}>{formatDateTime(raceData.ThirdPractice.date, raceData.ThirdPractice.time)}</span>
                       </div>
                     )}
@@ -116,12 +119,12 @@ const NextGpSection = () => {
                 {/* Qualifying & Race */}
                 {raceData.Qualifying && (
                   <div className={styles.session}>
-                    <span className={styles.sessionName}>Qualificação Principal</span>
+                    <span className={styles.sessionName}>{t('next_gp.sessions.qualifying')}</span>
                     <span className={styles.sessionTime}>{formatDateTime(raceData.Qualifying.date, raceData.Qualifying.time)}</span>
                   </div>
                 )}
                 <div className={styles.session}>
-                  <span className={styles.sessionName}>Corrida Principal</span>
+                  <span className={styles.sessionName}>{t('next_gp.sessions.race')}</span>
                   <span className={styles.sessionTime}>{formatDateTime(raceData.date, raceData.time)}</span>
                 </div>
               </div>
@@ -131,7 +134,7 @@ const NextGpSection = () => {
 
         <div className={styles.nextGpTrackContainer}>
           <div className={styles.nextGpTrackPlaceholder}>
-            <span className={styles.trackPlaceholderText}>Ver Detalhes da Pista</span>
+            <span className={styles.trackPlaceholderText}>{t('next_gp.view_track_details')}</span>
           </div>
         </div>
       </div>

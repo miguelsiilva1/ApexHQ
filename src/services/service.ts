@@ -18,6 +18,14 @@ export const service = {
     return fetchFromAPI<ErgastResponse>('/current');
   },
 
+  getLastRaceResults: async () => {
+    return fetchFromAPI<ErgastResponse>('/current/last/results');
+  },
+
+  getRaceResults: async (round: string | number) => {
+    return fetchFromAPI<ErgastResponse>(`/current/${round}/results`);
+  },
+
   getLatestNews: async () => {
     return new Promise((resolve) => {
       setTimeout(() => {

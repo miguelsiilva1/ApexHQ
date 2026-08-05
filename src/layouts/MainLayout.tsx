@@ -1,10 +1,12 @@
 import { Outlet, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import logoImg from '../assets/logo.png';
 
 const MainLayout = () => {
+  const { t, i18n } = useTranslation();
   const [isDark, setIsDark] = useState(false);
-  const [language, setLanguage] = useState('PT');
+  const [language, setLanguage] = useState(i18n.language?.toUpperCase().substring(0, 2) || 'PT');
 
   useEffect(() => {
     if (isDark) {
@@ -24,16 +26,19 @@ const MainLayout = () => {
             ApexHQ
           </Link>
           <div className={styles.nav_links}>
-            <Link to="/" className={styles.link}>Início</Link>
-            <Link to="/calendario" className={styles.link}>Calendário</Link>
-            <Link to="/pilotos" className={styles.link}>Pilotos</Link>
-            <Link to="/classificacoes" className={styles.link}>Classificações</Link>
+            <Link to="/" className={styles.link}>{t('navbar.home')}</Link>
+            <Link to="/calendario" className={styles.link}>{t('navbar.calendar')}</Link>
+            <Link to="/pilotos" className={styles.link}>{t('navbar.drivers')}</Link>
+            <Link to="/classificacoes" className={styles.link}>{t('navbar.standings')}</Link>
           </div>
           <div className={styles.nav_actions}>
             {/* Language Dropdown */}
             <select 
               value={language} 
-              onChange={(e) => setLanguage(e.target.value)}
+              onChange={(e) => {
+                setLanguage(e.target.value);
+                i18n.changeLanguage(e.target.value.toLowerCase());
+              }}
               className={styles.lang_select}
             >
               <option value="PT">PT</option>

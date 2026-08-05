@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { service } from '../../services';
 import { LoadingSpinner, ErrorAlert } from '../';
+import { useTranslation } from 'react-i18next';
 
 const NewsSection = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [newsData, setNewsData] = useState<any[]>([]);
@@ -14,7 +16,7 @@ const NewsSection = () => {
       const data = await service.getLatestNews() as any[];
       setNewsData(data);
     } catch (err) {
-      setError('Ocorreu um erro ao carregar as notícias. Tenta novamente mais tarde.');
+      setError(t('news.error'));
     } finally {
       setLoading(false);
     }
@@ -26,7 +28,7 @@ const NewsSection = () => {
 
   return (
     <section id="news-section" className={styles.newsSection}>
-      <h2 className={styles.sectionTitle}>Destaques & Últimas Notícias</h2>
+      <h2 className={styles.sectionTitle}>{t('news.title')}</h2>
       
       {loading ? (
         <div className="flex justify-center p-12">
@@ -40,7 +42,7 @@ const NewsSection = () => {
             <div key={item.id} className={styles.newsCard}>
               <div 
                 className={styles.newsImagePlaceholder}
-                style={{ backgroundImage: `url(${item.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                style={{ backgroundImage: `url(${item.imageUrl})` }}
               ></div>
               <div className={styles.newsCardContent}>
                 <p className={styles.newsCategory}>{item.category}</p>
@@ -60,7 +62,7 @@ const styles = {
   newsSection: "w-full scroll-mt-24",
   newsGrid: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8",
   newsCard: "bg-white dark:bg-[#151515] rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 overflow-hidden hover:-translate-y-2 hover:shadow-2xl hover:shadow-f1-red/20 transition-all duration-300 cursor-pointer group flex flex-col",
-  newsImagePlaceholder: "h-48 w-full bg-gray-300 dark:bg-gray-800 group-hover:opacity-80 transition-opacity",
+  newsImagePlaceholder: "h-48 w-full bg-gray-300 dark:bg-gray-800 group-hover:opacity-80 transition-opacity bg-cover bg-center",
   newsCardContent: "p-6 flex flex-col flex-grow",
   newsCategory: "font-orbitron text-xs text-f1-red uppercase tracking-wider mb-2 font-bold",
   newsTitle: "font-bold text-xl text-f1-dark dark:text-white mb-3 font-inter",

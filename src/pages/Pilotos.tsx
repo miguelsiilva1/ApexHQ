@@ -1,16 +1,18 @@
 import { mockTeams } from '../data/mockData';
+import { useTranslation } from 'react-i18next';
 
 const Pilotos = () => {
+  const { t } = useTranslation();
   return (
 
     <div className = {styles.container}>
       {/* Header */}
       <div className = {styles.page_header}>
         <h1 className = {styles.page_title}>
-          Grelha de Partida
+          {t('drivers.title')}
         </h1>
         <p className = {styles.page_subtitle}>
-          Temporada 2026
+          {t('drivers.subtitle')}
         </p>
       </div>
 

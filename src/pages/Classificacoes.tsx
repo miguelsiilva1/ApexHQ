@@ -1,8 +1,11 @@
+import { useTranslation } from 'react-i18next';
+
 const Classificacoes = () => {
+  const { t } = useTranslation();
   return (
     <div className = {styles.container}>
-      <h1 className = {styles.page_header}> Classificações</h1>
-      <p className = {styles.page_title}> Construtores a carregar...</p>
+      <h1 className = {styles.page_header}> {t('standings.title')}</h1>
+      <p className = {styles.page_title}> {t('standings.subtitle')}</p>
     </div>
   );
 };

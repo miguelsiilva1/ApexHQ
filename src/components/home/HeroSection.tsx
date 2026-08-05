@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import hero1 from '../../assets/hero/1.jpg';
 import hero2 from '../../assets/hero/2.jpg';
 import hero3 from '../../assets/hero/3.jpg';
@@ -6,6 +8,8 @@ import hero4 from '../../assets/hero/4.jpg';
 import hero5 from '../../assets/hero/5.jpg';
 
 const HeroSection = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const images = [hero1, hero2, hero3, hero4, hero5];
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
@@ -25,24 +29,24 @@ const HeroSection = () => {
   return (
     <section 
       className={styles.hero}
-      style={{ backgroundImage: `url(${images[currentImgIndex]})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'background-image 1s ease-in-out' }}
+      style={{ backgroundImage: `url(${images[currentImgIndex]})` }}
     >
       <div className={styles.heroOverlay}></div>
       <div className={styles.heroContent}>
-        <h1 className={styles.heroTitle}>A Nova Era da F1 2026</h1>
-        <p className={styles.heroSubtitle}>Descobre as novas regras, os novos carros e a emoção da próxima geração do desporto motorizado.</p>
+        <h1 className={styles.heroTitle}>{t('hero.title')}</h1>
+        <p className={styles.heroSubtitle}>{t('hero.subtitle')}</p>
         <div className={styles.heroButtons}>
           <button 
             className={styles.btnTransparent}
             onClick={() => scrollToSection('news-section')}
           >
-            Ler mais
+            {t('hero.read_more')}
           </button>
           <button 
             className={styles.btnRed}
-            onClick={() => scrollToSection('next-gp-section')}
+            onClick={() => navigate('/resultados')}
           >
-            Últimos Resultados
+            {t('hero.latest_results')}
           </button>
         </div>
       </div>
@@ -51,7 +55,7 @@ const HeroSection = () => {
 };
 
 const styles = {
-  hero: "relative w-full h-[70vh] flex items-center justify-center bg-gray-900 overflow-hidden transition-colors duration-300",
+  hero: "relative w-full h-[70vh] flex items-center justify-center bg-gray-900 overflow-hidden bg-cover bg-center transition-[background-image] duration-1000 ease-in-out",
   heroOverlay: "absolute inset-0 bg-black/50 dark:bg-black/60 z-10 transition-colors duration-300",
   heroContent: "relative z-20 text-center px-4 max-w-4xl mx-auto flex flex-col items-center",
   heroTitle: "font-orbitron text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight uppercase transition-colors duration-300 drop-shadow-lg",

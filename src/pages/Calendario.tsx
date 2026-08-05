@@ -1,8 +1,11 @@
+import { useTranslation } from 'react-i18next';
+
 const Calendario = () => {
+  const { t } = useTranslation();
   return (
     <div className = {styles.container}>
-      <h1 className = {styles.page_header}> Calendário 2025</h1>
-      <p className = {styles.page_title}> Grelha de partida a carregar...</p>
+      <h1 className = {styles.page_header}> {t('calendar.title')}</h1>
+      <p className = {styles.page_title}> {t('calendar.subtitle')}</p>
     </div>
   );
 };

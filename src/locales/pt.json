@@ -1,0 +1,125 @@
+{
+  "navbar": {
+    "home": "Início",
+    "calendar": "Calendário",
+    "drivers": "Pilotos",
+    "standings": "Classificações"
+  },
+  "hero": {
+    "title": "A Nova Era da F1 2026",
+    "subtitle": "Descobre as novas regras, os novos carros e a emoção da próxima geração do desporto motorizado.",
+    "read_more": "Ler mais",
+    "latest_results": "Últimos Resultados"
+  },
+  "next_gp": {
+    "title": "Próximo GP",
+    "view_track_details": "Ver Detalhes da Pista",
+    "error_not_found": "Não foi possível encontrar dados sobre a próxima corrida.",
+    "error_server": "Ocorreu um erro ao ligar aos servidores da F1. Tenta novamente mais tarde.",
+    "sessions": {
+      "fp1": "Treino Livre 1",
+      "fp2": "Treino Livre 2",
+      "fp3": "Treino Livre 3",
+      "sprint_qualifying": "Qualificação Sprint",
+      "sprint": "Sprint",
+      "qualifying": "Qualificação Principal",
+      "race": "Corrida Principal"
+    }
+  },
+  "news": {
+    "title": "Destaques & Últimas Notícias",
+    "error": "Ocorreu um erro ao carregar as notícias. Tenta novamente mais tarde."
+  },
+  "about": {
+    "title": "Sobre a ApexHQ",
+    "text": "A ApexHQ é o teu hub definitivo para tudo relacionado com a Fórmula 1. Estatísticas detalhadas, análises de corrida, e cobertura em tempo real das temporadas.",
+    "button": "Conhecer a Equipa / Criador"
+  },
+  "drivers": {
+    "title": "Grelha de Partida",
+    "subtitle": "Temporada 2026"
+  },
+  "standings": {
+    "title": "Classificações",
+    "subtitle": "Temporada 2026 (Em Breve)"
+  },
+  "calendar": {
+    "title": "Calendário",
+    "subtitle": "Temporada 2026 (Em Breve)"
+  },
+  "results": {
+    "title": "Resultados da Corrida",
+    "back": "Voltar",
+    "select_gp": "Selecionar Grande Prémio:",
+    "loading": "A carregar resultados...",
+    "position": "Pos",
+    "number": "Nº",
+    "driver": "Piloto",
+    "team": "Equipa",
+    "time_status": "Tempo / Estado",
+    "points": "Pontos",
+    "no_data": "Nenhuns dados disponíveis para esta corrida.",
+    "error_load_last": "Não foi possível carregar os resultados da última corrida.",
+    "error_load_generic": "Erro ao carregar os dados. Verifica a tua ligação.",
+    "error_load_specific_unavailable": "Os resultados para esta corrida ainda não estão disponíveis.",
+    "error_load_specific": "Erro ao carregar os resultados desta corrida.",
+    "stage": "Etapa"
+  },
+  "error": {
+    "retry": "Tentar Novamente"
+  },
+  "api": {
+    "gps": {
+      "Bahrain Grand Prix": "Grande Prémio do Bahrain",
+      "Bahrain Grand Prix in Malaysia": "Grande Prémio do Bahrain na Malásia",
+      "Saudi Arabian Grand Prix": "Grande Prémio da Arábia Saudita",
+      "Australian Grand Prix": "Grande Prémio da Austrália",
+      "Japanese Grand Prix": "Grande Prémio do Japão",
+      "Chinese Grand Prix": "Grande Prémio da China",
+      "Miami Grand Prix": "Grande Prémio de Miami",
+      "Emilia Romagna Grand Prix": "Grande Prémio da Emilia Romagna",
+      "Monaco Grand Prix": "Grande Prémio do Mónaco",
+      "Canadian Grand Prix": "Grande Prémio do Canadá",
+      "Spanish Grand Prix": "Grande Prémio de Espanha",
+      "Barcelona Grand Prix": "Grande Prémio de Barcelona",
+      "Austrian Grand Prix": "Grande Prémio da Áustria",
+      "British Grand Prix": "Grande Prémio da Grã-Bretanha",
+      "Hungarian Grand Prix": "Grande Prémio da Hungria",
+      "Belgian Grand Prix": "Grande Prémio da Bélgica",
+      "Dutch Grand Prix": "Grande Prémio dos Países Baixos",
+      "Italian Grand Prix": "Grande Prémio de Itália",
+      "Azerbaijan Grand Prix": "Grande Prémio do Azerbaijão",
+      "Singapore Grand Prix": "Grande Prémio de Singapura",
+      "United States Grand Prix": "Grande Prémio dos Estados Unidos",
+      "Mexico City Grand Prix": "Grande Prémio da Cidade do México",
+      "Brazilian Grand Prix": "Grande Prémio do Brasil",
+      "Las Vegas Grand Prix": "Grande Prémio de Las Vegas",
+      "Qatar Grand Prix": "Grande Prémio do Catar",
+      "Abu Dhabi Grand Prix": "Grande Prémio de Abu Dhabi"
+    },
+    "countries": {
+      "Bahrain": "Bahrain",
+      "Saudi Arabia": "Arábia Saudita",
+      "Australia": "Austrália",
+      "Japan": "Japão",
+      "China": "China",
+      "USA": "EUA",
+      "United States": "Estados Unidos",
+      "Italy": "Itália",
+      "Monaco": "Mónaco",
+      "Canada": "Canadá",
+      "Spain": "Espanha",
+      "Austria": "Áustria",
+      "UK": "Reino Unido",
+      "Hungary": "Hungria",
+      "Belgium": "Bélgica",
+      "Netherlands": "Países Baixos",
+      "Azerbaijan": "Azerbaijão",
+      "Singapore": "Singapura",
+      "Mexico": "México",
+      "Brazil": "Brasil",
+      "Qatar": "Catar",
+      "UAE": "EAU"
+    }
+  }
+}

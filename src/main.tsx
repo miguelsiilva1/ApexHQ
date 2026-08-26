@@ -10,6 +10,7 @@ import Pilotos from './pages/Pilotos'
 import Classificacoes from './pages/Classificacoes'
 import Calendario from './pages/Calendario'
 import Resultados from './pages/Resultados'
+import TrackDetail from './pages/TrackDetail'
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: '/classificacoes',
         element: <Classificacoes />,
+      },
+      {
+        path: '/pistas/:circuitId',
+        element: <TrackDetail />,
       }
     ],
   },

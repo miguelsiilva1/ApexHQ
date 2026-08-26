@@ -6,6 +6,18 @@ export const service = {
     return fetchFromAPI<ErgastResponse>('/current/driverStandings');
   },
 
+  getDriverStandingsBySeason: async (season: string | number) => {
+    return fetchFromAPI<ErgastResponse>(`/${season}/driverStandings`);
+  },
+
+  getConstructorStandingsBySeason: async (season: string | number) => {
+    return fetchFromAPI<ErgastResponse>(`/${season}/constructorStandings`);
+  },
+
+  getFastestLapsBySeason: async (season: string | number) => {
+    return fetchFromAPI<ErgastResponse>(`/${season}/fastest/1/results`);
+  },
+
   getNextRace: async () => {
     return fetchFromAPI<ErgastResponse>('/current/next');
   },
@@ -14,8 +26,20 @@ export const service = {
     return fetchFromAPI<ErgastResponse>('/current/drivers');
   },
   
+  getCalendarBySeason: async (season: string | number) => {
+    return fetchFromAPI<ErgastResponse>(`/${season}`);
+  },
+
   getCurrentCalendar: async () => {
     return fetchFromAPI<ErgastResponse>('/current');
+  },
+
+  getCircuitWinners: async (circuitId: string) => {
+    return fetchFromAPI<ErgastResponse>(`/circuits/${circuitId}/results/1?limit=200`);
+  },
+
+  getCircuitFastestLaps: async (circuitId: string) => {
+    return fetchFromAPI<ErgastResponse>(`/circuits/${circuitId}/fastest/1/results?limit=200`);
   },
 
   getLastRaceResults: async () => {

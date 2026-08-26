@@ -41,11 +41,36 @@
   },
   "standings": {
     "title": "Standings",
-    "subtitle": "2026 Season (Coming Soon)"
+    "subtitle": "{{season}} Season",
+    "select_season": "Select Season",
+    "drivers_championship": "Drivers' Championship",
+    "constructors_championship": "Constructors' Championship",
+    "fastest_lap_award": "DHL Fastest Lap Award",
+    "position": "Pos",
+    "driver": "Driver",
+    "constructor": "Constructor",
+    "points": "Pts",
+    "wins": "Wins",
+    "fastest_laps": "Fastest Laps",
+    "loading": "Loading standings...",
+    "error_load": "Error loading standings. Please try again."
   },
   "calendar": {
     "title": "Calendar",
-    "subtitle": "2026 Season (Coming Soon)"
+    "subtitle": "{{season}} Season",
+    "round": "Round",
+    "view_details": "View Details",
+    "loading": "Loading calendar...",
+    "error_load": "Error loading calendar."
+  },
+  "track": {
+    "title": "Track Details",
+    "back": "Back to Calendar",
+    "stats_title": "Circuit Statistics",
+    "most_wins": "Driver with most Wins",
+    "fastest_lap": "Track Record (Fastest Lap)",
+    "loading": "Analyzing historical circuit data...",
+    "no_data": "Insufficient data."
   },
   "results": {
     "title": "Race Results",

@@ -41,11 +41,36 @@
   },
   "standings": {
     "title": "Classificações",
-    "subtitle": "Temporada 2026 (Em Breve)"
+    "subtitle": "Temporada {{season}}",
+    "select_season": "Selecionar Temporada",
+    "drivers_championship": "Campeonato de Pilotos",
+    "constructors_championship": "Campeonato de Construtores",
+    "fastest_lap_award": "Prémio DHL Volta Mais Rápida",
+    "position": "Pos",
+    "driver": "Piloto",
+    "constructor": "Construtor",
+    "points": "Pts",
+    "wins": "Vit",
+    "fastest_laps": "Voltas Rápidas",
+    "loading": "A carregar classificações...",
+    "error_load": "Erro ao carregar as classificações. Tente novamente."
   },
   "calendar": {
     "title": "Calendário",
-    "subtitle": "Temporada 2026 (Em Breve)"
+    "subtitle": "Temporada {{season}}",
+    "round": "Ronda",
+    "view_details": "Ver Detalhes",
+    "loading": "A carregar calendário...",
+    "error_load": "Erro ao carregar o calendário."
+  },
+  "track": {
+    "title": "Detalhes da Pista",
+    "back": "Voltar ao Calendário",
+    "stats_title": "Estatísticas do Circuito",
+    "most_wins": "Piloto com mais Vitórias",
+    "fastest_lap": "Recorde da Pista (Volta Mais Rápida)",
+    "loading": "A analisar os dados históricos do circuito...",
+    "no_data": "Dados insuficientes."
   },
   "results": {
     "title": "Resultados da Corrida",

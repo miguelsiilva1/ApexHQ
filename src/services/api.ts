@@ -2,7 +2,13 @@ const BASE_URL = 'https://api.jolpi.ca/ergast/f1';
 
 export async function fetchFromAPI<T>(endpoint: string): Promise<T> {
   try {
-    const url = `${BASE_URL}${endpoint}.json`;
+    let url = `${BASE_URL}${endpoint}`;
+    if (endpoint.includes('?')) {
+      const [path, query] = endpoint.split('?');
+      url = `${BASE_URL}${path}.json?${query}`;
+    } else {
+      url = `${BASE_URL}${endpoint}.json`;
+    }
     
     const response = await fetch(url);
     

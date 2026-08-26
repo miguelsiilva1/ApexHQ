@@ -75,10 +75,19 @@ export interface DriverStanding {
   Constructors: Constructor[];
 }
 
+export interface ConstructorStanding {
+  position: string;
+  positionText: string;
+  points: string;
+  wins: string;
+  Constructor: Constructor;
+}
+
 export interface StandingsList {
   season: string;
   round: string;
-  DriverStandings: DriverStanding[];
+  DriverStandings?: DriverStanding[];
+  ConstructorStandings?: ConstructorStanding[];
 }
 
 export interface MRData {

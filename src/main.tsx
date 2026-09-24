@@ -11,6 +11,8 @@ import Classificacoes from './pages/Classificacoes'
 import Calendario from './pages/Calendario'
 import Resultados from './pages/Resultados'
 import TrackDetail from './pages/TrackDetail'
+import PilotDetail from './pages/PilotDetail'
+import TeamDetail from './pages/TeamDetail'
 
 const router = createBrowserRouter([
   {
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
       {
         path: '/pistas/:circuitId',
         element: <TrackDetail />,
+      },
+      {
+        path: '/pilotos/:driverId',
+        element: <PilotDetail />,
+      },
+      {
+        path: '/equipas/:constructorId',
+        element: <TeamDetail />,
       }
     ],
   },

@@ -1,112 +1,192 @@
-import { mockTeams } from '../data/mockData';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { service } from '../services/service';
+import type { Constructor, Driver } from '../types/api.types';
+import SeasonSelector from '../components/standings/SeasonSelector';
+import TeamCard, { type TeamEntry } from '../components/drivers/TeamCard';
+import DriverSearch from '../components/drivers/DriverSearch';
+import LegendCard from '../components/drivers/LegendCard';
+import { useF1Directory } from '../hooks/useF1Directory';
+import { legendDrivers, legendTeams } from '../data/legends';
+import { driverChampions, constructorChampions, countTitles } from '../data/champions';
+import { CURRENT_SEASON } from '../data/f1Media';
+
+type Tab = 'grid' | 'legends';
+
+// Groups drivers by the last team they raced for in the season
+const fetchSeasonGrid = async (season: string): Promise<TeamEntry[]> => {
+  const standingsRes = await service.getDriverStandingsBySeason(season);
+  const standings = standingsRes.MRData.StandingsTable?.StandingsLists[0]?.DriverStandings || [];
+  const teams = new Map<string, TeamEntry>();
+
+  if (standings.length > 0) {
+    standings.forEach(({ Driver, Constructors }) => {
+      const constructor = Constructors[Constructors.length - 1];
+      if (!constructor) return;
+      if (!teams.has(constructor.constructorId)) teams.set(constructor.constructorId, { constructor, drivers: [] });
+      teams.get(constructor.constructorId)!.drivers.push(Driver);
+    });
+  } else {
+    // Season without races yet: ask each constructor for its entered drivers
+    const constructorsRes = await service.getSeasonConstructors(season);
+    const constructors: Constructor[] = constructorsRes.MRData.ConstructorTable?.Constructors || [];
+    for (const constructor of constructors) {
+      const driversRes = await service.getSeasonConstructorDrivers(season, constructor.constructorId);
+      const drivers: Driver[] = driversRes.MRData.DriverTable?.Drivers || [];
+      teams.set(constructor.constructorId, { constructor, drivers });
+    }
+  }
+
+  return [...teams.values()].sort((a, b) => a.constructor.name.localeCompare(b.constructor.name));
+};
 
 const Pilotos = () => {
   const { t } = useTranslation();
-  return (
 
-    <div className = {styles.container}>
+  const [tab, setTab] = useState<Tab>('grid');
+  const [season, setSeason] = useState<string>(CURRENT_SEASON);
+  const [teams, setTeams] = useState<TeamEntry[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const { directory, loading: legendsLoading, error: legendsError } = useF1Directory(tab === 'legends');
+
+  useEffect(() => {
+    const loadGrid = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        setTeams(await fetchSeasonGrid(season));
+      } catch (err) {
+        console.error("Failed to fetch drivers:", err);
+        setError(t('drivers.error_load'));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadGrid();
+  }, [season, t]);
+
+  const legendDriverData = legendDrivers
+    .map((id) => directory?.drivers.find((d) => d.driverId === id))
+    .filter((d): d is Driver => !!d);
+  const legendTeamData = legendTeams
+    .map((id) => directory?.constructors.find((c) => c.constructorId === id))
+    .filter((c): c is Constructor => !!c);
+
+  return (
+    <div className={styles.container}>
       {/* Header */}
-      <div className = {styles.page_header}>
-        <h1 className = {styles.page_title}>
-          {t('drivers.title')}
-        </h1>
-        <p className = {styles.page_subtitle}>
-          {t('drivers.subtitle')}
-        </p>
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.page_header}>{t('drivers.title')}</h1>
+          <p className={styles.page_title}>
+            {tab === 'grid' ? t('drivers.subtitle', { season }) : t('drivers.legends_subtitle')}
+          </p>
+        </div>
+        <div className={styles.header_actions}>
+          <DriverSearch />
+          {tab === 'grid' && <SeasonSelector currentSeason={season} onSeasonChange={setSeason} />}
+        </div>
       </div>
 
-      {/* Teams */}
-      <div className = {styles.grid}>
-        {mockTeams.map((team) => (
-          <div key={team.id} className = {styles.card}>
-            
-            {/* Team Header */}
-            <div className = {styles.card_header}>
-              <h2 className = {styles.team_name}>
-                {team.name}
-              </h2>
-              <img 
-                src = {team.logo} 
-                alt = {`${team.name} Logo`} 
-                className = {styles.team_logo}/>
-            </div>
-
-            <div className = {styles.card_body}>
-
-              {/* Drivers */}
-              <div className = {styles.drivers_row}>
-                {team.drivers.map((driver) => (
-                  <div key={driver.id} className = {styles.driver_container}>
-
-                    {/* Driver Image */}
-                    <div className = {styles.driver_image_wrapper}>
-                      <img 
-                        src = {driver.image} 
-                        alt = {driver.name} 
-                        className = {styles.driver_image}
-                      />
-                    </div>
-                    
-                    {/* Details */}
-                    <div className = {styles.driver_number_back}>
-                      {driver.number}
-                    </div>
-                    <h3 className = {styles.driver_name}>
-                      {driver.name.split(' ')[0]} <br/>
-                      <span className = "text-f1-red uppercase"> {driver.name.split(' ')[1]}</span>
-                    </h3>
-                    <span className = {styles.driver_number_badge}>
-                      {driver.number}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Car */}
-              <div className = {styles.car_wrapper}>
-                <img 
-                  src = {team.car_image} 
-                  alt = {`${team.name} Car`} 
-                  className = {styles.car_image}
-                />
-              </div>
-            </div>
-            
-            <div className = "h-12 md:h-16"></div>
-          </div>
+      {/* Tabs */}
+      <div className={styles.tabs}>
+        {(['grid', 'legends'] as Tab[]).map((key) => (
+          <button
+            key={key}
+            onClick={() => setTab(key)}
+            className={`${styles.tab} ${tab === key ? styles.tab_active : styles.tab_inactive}`}
+          >
+            {t(`drivers.tab_${key}`)}
+          </button>
         ))}
       </div>
+
+      {tab === 'grid' && (
+        <>
+          {error && (
+            <div className={styles.error} role="alert">
+              <span className="block sm:inline">{error}</span>
+            </div>
+          )}
+
+          <div className={styles.grid}>
+            {loading
+              ? [...Array(6)].map((_, index) => <div key={index} className={styles.skeleton}></div>)
+              : teams.map((team) => <TeamCard key={team.constructor.constructorId} team={team} season={season} />)}
+            {!loading && teams.length === 0 && !error && (
+              <div className={styles.empty}>{t('drivers.no_data')}</div>
+            )}
+          </div>
+        </>
+      )}
+
+      {tab === 'legends' && (
+        <>
+          {legendsError && (
+            <div className={styles.error} role="alert">
+              <span className="block sm:inline">{t('drivers.error_load')}</span>
+            </div>
+          )}
+
+          <h2 className={styles.section_title}>{t('drivers.legend_drivers')}</h2>
+          <div className={styles.legends_grid}>
+            {legendsLoading
+              ? [...Array(8)].map((_, index) => <div key={index} className={styles.legend_skeleton}></div>)
+              : legendDriverData.map((driver) => (
+                  <LegendCard
+                    key={driver.driverId}
+                    to={`/pilotos/${driver.driverId}`}
+                    name={`${driver.givenName} ${driver.familyName}`}
+                    nationality={driver.nationality}
+                    wikiUrl={driver.url}
+                    titles={countTitles(driverChampions, driver.driverId)}
+                  />
+                ))}
+          </div>
+
+          <h2 className={styles.section_title}>{t('drivers.legend_teams')}</h2>
+          <div className={styles.legends_grid}>
+            {legendsLoading
+              ? [...Array(4)].map((_, index) => <div key={index} className={styles.legend_skeleton}></div>)
+              : legendTeamData.map((team) => (
+                  <LegendCard
+                    key={team.constructorId}
+                    to={`/equipas/${team.constructorId}`}
+                    name={team.name}
+                    nationality={team.nationality}
+                    wikiUrl={team.url}
+                    titles={countTitles(constructorChampions, team.constructorId)}
+                  />
+                ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
-
 const styles = {
-  container: "p-6 space-y-8 pb-20",
-  page_header: "mb-10 border-l-4 border-f1-red pl-4",
-  page_title: "font-orbitron text-4xl md:text-5xl font-bold text-white uppercase",
-  page_subtitle: "text-f1-light-gray mt-2 font-inter text-lg",
-  
-  grid: "grid grid-cols-1 lg:grid-cols-2 gap-8",
-  
-  card: "bg-[#15151e] rounded-xl border border-white/10 overflow-hidden hover:border-f1-red/50 transition-all duration-300 group",
-  card_header: "bg-white/5 p-4 flex items-center justify-between border-b border-white/5",
-  card_body: "p-6 relative",
-  
-  team_name: "font-orbitron text-xl md:text-2xl font-bold text-white uppercase tracking-wider",
-  team_logo: "h-8 md:h-10 object-contain opacity-80 group-hover:opacity-100 transition-opacity",
-  
-  drivers_row: "flex justify-around items-end mb-12 relative z-10",
-  driver_container: "text-center flex flex-col items-center",
-  driver_image_wrapper: "relative w-24 h-24 md:w-32 md:h-32 mb-2 rounded-full overflow-hidden border-2 border-transparent group-hover:border-f1-red transition-all bg-gradient-to-b from-white/10 to-transparent",
-  driver_image: "w-full h-full object-cover object-top pt-2",
-  driver_number_back: "font-orbitron font-bold text-2xl text-white/10 absolute top-0 -z-10 scale-150",
-  driver_name: "font-bold text-white text-lg leading-none",
-  driver_number_badge: "text-xs font-bold bg-white/10 px-2 py-0.5 rounded mt-1 text-gray-400",
-  
-  car_wrapper: "absolute -bottom-4 left-0 right-0 flex justify-center pointer-events-none",
-  car_image: "w-[90%] md:w-[80%] object-contain transform group-hover:scale-105 group-hover:-translate-y-2 transition-transform duration-500 ease-out",
+  container: "p-8 max-w-[1600px] mx-auto min-h-screen",
+  header: "flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4",
+  header_actions: "flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto",
+  page_header: "font-orbitron text-4xl font-bold text-f1-red mb-2 uppercase tracking-wide",
+  page_title: "font-inter text-gray-600 dark:text-gray-400 text-lg",
+
+  tabs: "flex gap-2 mb-10 border-b border-gray-200 dark:border-gray-800",
+  tab: "px-5 py-3 font-orbitron text-sm font-bold uppercase tracking-wider border-b-2 -mb-px transition-colors",
+  tab_active: "border-f1-red text-f1-red",
+  tab_inactive: "border-transparent text-gray-500 dark:text-gray-400 hover:text-f1-dark dark:hover:text-white",
+
+  error: "bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 dark:text-red-400 px-4 py-3 rounded relative mb-8",
+  grid: "grid grid-cols-1 lg:grid-cols-2 gap-10",
+  skeleton: "w-full bg-white/50 dark:bg-[#151515]/50 backdrop-blur-md h-[420px] rounded-2xl animate-pulse border border-gray-200 dark:border-gray-800",
+  empty: "col-span-full py-20 text-center text-gray-500 font-inter",
+
+  section_title: "font-orbitron text-2xl font-bold text-f1-dark dark:text-white mb-6 uppercase border-l-4 border-f1-red pl-4",
+  legends_grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-14",
+  legend_skeleton: "w-full h-80 rounded-2xl animate-pulse bg-white/50 dark:bg-[#151515]/50 border border-gray-200 dark:border-gray-800",
 };
 
 export default Pilotos;

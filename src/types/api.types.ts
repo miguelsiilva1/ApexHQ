@@ -1,7 +1,7 @@
 export interface Driver {
   driverId: string;
-  permanentNumber: string;
-  code: string;
+  permanentNumber?: string;
+  code?: string;
   url: string;
   givenName: string;
   familyName: string;
@@ -107,6 +107,12 @@ export interface MRData {
   };
   DriverTable?: {
     Drivers: Driver[];
+  };
+  ConstructorTable?: {
+    Constructors: Constructor[];
+  };
+  SeasonTable?: {
+    Seasons: { season: string; url: string }[];
   };
 }
 

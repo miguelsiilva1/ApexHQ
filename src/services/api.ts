@@ -1,4 +1,5 @@
 const BASE_URL = 'https://api.jolpi.ca/ergast/f1';
+const MAX_RETRIES = 3;
 
 export async function fetchFromAPI<T>(endpoint: string): Promise<T> {
   try {
@@ -10,8 +11,13 @@ export async function fetchFromAPI<T>(endpoint: string): Promise<T> {
       url = `${BASE_URL}${endpoint}.json`;
     }
     
-    const response = await fetch(url);
-    
+    // Jolpica answers 429 when its rate limit is hit; back off and retry
+    let response = await fetch(url);
+    for (let attempt = 1; response.status === 429 && attempt <= MAX_RETRIES; attempt++) {
+      await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** (attempt - 1)));
+      response = await fetch(url);
+    }
+
     if (!response.ok) {
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }

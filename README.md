@@ -21,16 +21,16 @@ ApexHQ is a responsive single-page application for Formula 1 fans. It combines l
 
 ## Features
 
-| Area | What it offers |
-| --- | --- |
-| **Home** | Hero slideshow, next Grand Prix with full session schedule and clickable circuit map, latest F1 news with dedicated article pages. |
-| **Calendar** | Season selector, race cards with official circuit layouts, completed/next race status and direct links to results. |
-| **Circuits** | Detailed track map, all-time lap record, driver with most wins and recent winners. |
-| **Results** | Classification of every Grand Prix of the current season. |
-| **Drivers & Teams** | Season grid with driver photos, numbers and car liveries; career pages for drivers and teams; search across every driver and constructor since 1950; a curated *Legends* section. |
-| **Standings** | Drivers' and Constructors' championships and the DHL Fastest Lap Award, for any season. |
+| Area                | What it offers                                                                                                                                                                    |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Home**            | Hero slideshow, next Grand Prix with full session schedule and clickable circuit map, latest F1 news with dedicated article pages.                                                |
+| **Calendar**        | Season selector, race cards with official circuit layouts, completed/next race status and direct links to results.                                                                |
+| **Circuits**        | Detailed track map, all-time lap record, driver with most wins and recent winners.                                                                                                |
+| **Results**         | Classification of every Grand Prix of the current season.                                                                                                                         |
+| **Drivers & Teams** | Season grid with driver photos, numbers and car liveries; career pages for drivers and teams; search across every driver and constructor since 1950; a curated _Legends_ section. |
+| **Standings**       | Drivers' and Constructors' championships and the DHL Fastest Lap Award, for any season.                                                                                           |
 
-**Across the app:** PT/EN translations · light/dark theme · page transitions and scroll animations (respecting *reduced motion*) · per-page titles and meta descriptions · mobile navigation · 404 page.
+**Across the app:** PT/EN translations · light/dark theme · page transitions and scroll animations (respecting _reduced motion_) · per-page titles and meta descriptions · mobile navigation · 404 page.
 
 ## Tech Stack
 
@@ -43,12 +43,12 @@ ApexHQ is a responsive single-page application for Formula 1 fans. It combines l
 
 ## Data Sources
 
-| Source | Used for |
-| --- | --- |
-| [Jolpica F1 API](https://github.com/jolpica/jolpica-f1) (Ergast-compatible) | Calendars, results, standings, drivers, constructors and circuits |
-| Motorsport.com & Autosport RSS feeds | Latest news |
-| Wikipedia REST API | Images for historical drivers, teams and circuits |
-| Formula 1 media | Current-season driver photos, cars, team logos and circuit maps (bundled locally) |
+| Source                                                                      | Used for                                                                          |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| [Jolpica F1 API](https://github.com/jolpica/jolpica-f1) (Ergast-compatible) | Calendars, results, standings, drivers, constructors and circuits                 |
+| Motorsport.com & Autosport RSS feeds                                        | Latest news                                                                       |
+| Wikipedia REST API                                                          | Images for historical drivers, teams and circuits                                 |
+| Formula 1 media                                                             | Current-season driver photos, cars, team logos and circuit maps (bundled locally) |
 
 No API keys are required.
 
@@ -67,12 +67,12 @@ Then open [http://localhost:5173](http://localhost:5173).
 
 ### Scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the development server |
-| `npm run build` | Type-check and build for production (`dist/`) |
+| Command           | Description                                                          |
+| ----------------- | -------------------------------------------------------------------- |
+| `npm run dev`     | Start the development server                                         |
+| `npm run build`   | Type-check and build for production (`dist/`)                        |
 | `npm run preview` | Serve the production build locally, with production security headers |
-| `npm run lint` | Run ESLint |
+| `npm run lint`    | Run ESLint                                                           |
 
 ## Project Structure
 
@@ -97,22 +97,6 @@ src/
 - **Untrusted content:** feed content is parsed as text only (never rendered as HTML), and only HTTPS links from the expected domains are kept. Route parameters are validated before they reach an API URL.
 - **Security headers:** `vercel.json` sets a Content Security Policy, HSTS, `X-Frame-Options` and related headers.
 - **Images:** current-season assets are bundled locally; older seasons fall back to Wikipedia, then to a text placeholder.
-
-## Deployment
-
-The project is ready for [Vercel](https://vercel.com): import the repository and keep the default Vite settings. `vercel.json` already provides the SPA fallback (so links like `/pilotos/senna` work when opened directly), the news-feed rewrites and the security headers.
-
-## Roadmap
-
-- [ ] User accounts with Firebase Authentication (favourite drivers and teams)
-- [ ] Firestore security rules
-- [ ] Production deployment
-- [ ] Additional statistics in Standings
-
-## Maintenance
-
-- **End of each season:** add the champions to `src/data/champions.ts`.
-- **New season:** update `CURRENT_SEASON` in `src/data/f1Media.ts` and refresh the bundled media in `src/assets/`.
 
 ## Disclaimer
 

@@ -28,7 +28,12 @@
   },
   "news": {
     "title": "Destaques & Últimas Notícias",
-    "error": "Ocorreu um erro ao carregar as notícias. Tenta novamente mais tarde."
+    "error": "Ocorreu um erro ao carregar as notícias. Tenta novamente mais tarde.",
+    "back": "Voltar às Notícias",
+    "not_found": "Esta notícia já não está disponível.",
+    "read_full": "Ler artigo completo em {{source}}",
+    "language_note": "Notícias fornecidas por feeds RSS oficiais, em inglês.",
+    "more": "Mais Notícias"
   },
   "about": {
     "title": "Sobre a ApexHQ",
@@ -69,7 +74,8 @@
     "season_by_season": "Temporada a Temporada",
     "year": "Ano",
     "team": "Equipa",
-    "best_finish": "Melhor Resultado"
+    "best_finish": "Melhor Resultado",
+    "meta_description": "Carreira, títulos, vitórias e estatísticas de {{name}} na Fórmula 1."
   },
   "team_detail": {
     "back": "Voltar aos Pilotos",
@@ -85,7 +91,8 @@
     "seasons": "Temporadas",
     "current_drivers": "Pilotos Atuais",
     "last_drivers": "Pilotos em {{season}}",
-    "seasons_title": "Temporadas na F1"
+    "seasons_title": "Temporadas na F1",
+    "meta_description": "História, títulos e estatísticas da equipa {{name}} na Fórmula 1."
   },
   "standings": {
     "title": "Classificações",
@@ -109,7 +116,12 @@
     "round": "Ronda",
     "view_details": "Ver Detalhes",
     "loading": "A carregar calendário...",
-    "error_load": "Erro ao carregar o calendário."
+    "error_load": "Erro ao carregar o calendário.",
+    "status_done": "Concluída",
+    "status_next": "Próxima",
+    "view_results": "Resultados",
+    "local_time": "hora local",
+    "no_data": "Sem corridas para esta temporada."
   },
   "track": {
     "title": "Detalhes da Pista",
@@ -118,7 +130,14 @@
     "most_wins": "Piloto com mais Vitórias",
     "fastest_lap": "Recorde da Pista (Volta Mais Rápida)",
     "loading": "A analisar os dados históricos do circuito...",
-    "no_data": "Dados insuficientes."
+    "no_data": "Dados insuficientes.",
+    "recent_winners": "Últimos Vencedores",
+    "year": "Ano",
+    "driver": "Piloto",
+    "constructor": "Construtor",
+    "wins_count_one": "{{count}} vitória",
+    "wins_count_other": "{{count}} vitórias",
+    "meta_description": "Estatísticas, recordes e vencedores do circuito {{name}}."
   },
   "results": {
     "title": "Resultados da Corrida",
@@ -192,7 +211,18 @@
       "Mexico": "México",
       "Brazil": "Brasil",
       "Qatar": "Catar",
-      "UAE": "EAU"
+      "UAE": "EAU",
+      "Malaysia": "Malásia",
+      "Portugal": "Portugal",
+      "Turkey": "Turquia",
+      "Russia": "Rússia",
+      "France": "França",
+      "Germany": "Alemanha"
     }
+  },
+  "not_found": {
+    "title": "Página não encontrada",
+    "text": "Parece que saíste da pista. A página que procuras não existe ou foi movida.",
+    "button": "Voltar ao Início"
   }
 }

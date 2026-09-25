@@ -7,6 +7,8 @@ import type { Constructor, Driver, Race } from '../types/api.types';
 import EntityImage from '../components/drivers/EntityImage';
 import { driverImages, CURRENT_SEASON } from '../data/f1Media';
 import { driverChampions, countTitles } from '../data/champions';
+import { usePageMeta } from '../hooks/usePageMeta';
+import { isValidId } from '../utils/format';
 
 interface SeasonSummary {
   season: string;
@@ -75,9 +77,16 @@ const PilotDetail = () => {
   const [career, setCareer] = useState<CareerStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  usePageMeta(
+    driver ? `${driver.givenName} ${driver.familyName}` : t('drivers.title'),
+    driver ? t('driver_detail.meta_description', { name: `${driver.givenName} ${driver.familyName}` }) : undefined
+  );
 
   useEffect(() => {
-    if (!driverId) return;
+    if (!isValidId(driverId)) {
+      setLoading(false);
+      return;
+    }
 
     const fetchDriverData = async () => {
       setLoading(true);

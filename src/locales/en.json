@@ -28,7 +28,12 @@
   },
   "news": {
     "title": "Highlights & Latest News",
-    "error": "An error occurred while loading news. Please try again later."
+    "error": "An error occurred while loading news. Please try again later.",
+    "back": "Back to News",
+    "not_found": "This article is no longer available.",
+    "read_full": "Read the full article on {{source}}",
+    "language_note": "News provided by official RSS feeds.",
+    "more": "More News"
   },
   "about": {
     "title": "About ApexHQ",
@@ -69,7 +74,8 @@
     "season_by_season": "Season by Season",
     "year": "Year",
     "team": "Team",
-    "best_finish": "Best Finish"
+    "best_finish": "Best Finish",
+    "meta_description": "Career, titles, wins and stats of {{name}} in Formula 1."
   },
   "team_detail": {
     "back": "Back to Drivers",
@@ -85,7 +91,8 @@
     "seasons": "Seasons",
     "current_drivers": "Current Drivers",
     "last_drivers": "Drivers in {{season}}",
-    "seasons_title": "Seasons in F1"
+    "seasons_title": "Seasons in F1",
+    "meta_description": "History, titles and stats of {{name}} in Formula 1."
   },
   "standings": {
     "title": "Standings",
@@ -109,7 +116,12 @@
     "round": "Round",
     "view_details": "View Details",
     "loading": "Loading calendar...",
-    "error_load": "Error loading calendar."
+    "error_load": "Error loading calendar.",
+    "status_done": "Completed",
+    "status_next": "Next",
+    "view_results": "Results",
+    "local_time": "local time",
+    "no_data": "No races for this season."
   },
   "track": {
     "title": "Track Details",
@@ -118,7 +130,14 @@
     "most_wins": "Driver with most Wins",
     "fastest_lap": "Track Record (Fastest Lap)",
     "loading": "Analyzing historical circuit data...",
-    "no_data": "Insufficient data."
+    "no_data": "Insufficient data.",
+    "recent_winners": "Recent Winners",
+    "year": "Year",
+    "driver": "Driver",
+    "constructor": "Constructor",
+    "wins_count_one": "{{count}} win",
+    "wins_count_other": "{{count}} wins",
+    "meta_description": "Stats, records and winners of {{name}}."
   },
   "results": {
     "title": "Race Results",
@@ -192,7 +211,18 @@
       "Mexico": "Mexico",
       "Brazil": "Brazil",
       "Qatar": "Qatar",
-      "UAE": "UAE"
+      "UAE": "UAE",
+      "Malaysia": "Malaysia",
+      "Portugal": "Portugal",
+      "Turkey": "Turkey",
+      "Russia": "Russia",
+      "France": "France",
+      "Germany": "Germany"
     }
+  },
+  "not_found": {
+    "title": "Page not found",
+    "text": "Looks like you went off track. The page you are looking for doesn't exist or has moved.",
+    "button": "Back to Home"
   }
 }

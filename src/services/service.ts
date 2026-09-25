@@ -48,12 +48,16 @@ export const service = {
     return fetchFromAPI<ErgastResponse>('/current');
   },
 
-  getCircuitWinners: async (circuitId: string) => {
-    return fetchFromAPI<ErgastResponse>(`/circuits/${circuitId}/results/1?limit=200`);
+  getCircuit: async (circuitId: string) => {
+    return fetchFromAPI<ErgastResponse>(`/circuits/${circuitId}`);
   },
 
-  getCircuitFastestLaps: async (circuitId: string) => {
-    return fetchFromAPI<ErgastResponse>(`/circuits/${circuitId}/fastest/1/results?limit=200`);
+  getCircuitWinners: async (circuitId: string, offset = 0) => {
+    return fetchFromAPI<ErgastResponse>(`/circuits/${circuitId}/results/1?limit=100&offset=${offset}`);
+  },
+
+  getCircuitFastestLaps: async (circuitId: string, offset = 0) => {
+    return fetchFromAPI<ErgastResponse>(`/circuits/${circuitId}/fastest/1/results?limit=100&offset=${offset}`);
   },
 
   getLastRaceResults: async () => {
@@ -100,35 +104,5 @@ export const service = {
 
   getAllConstructors: async (offset: number) => {
     return fetchFromAPI<ErgastResponse>(`/constructors?limit=100&offset=${offset}`);
-  },
-
-  getLatestNews: async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([
-          {
-            id: 1,
-            category: "Regulamentos",
-            title: "O que muda nos motores em 2026?",
-            excerpt: "Uma análise profunda aos novos regulamentos que prometem revolucionar a grelha de partida para a próxima geração.",
-            imageUrl: "https://images.unsplash.com/photo-1541348263662-e06836264be4?w=800"
-          },
-          {
-            id: 2,
-            category: "Pilotos",
-            title: "O Mercado de Transferências Aquece",
-            excerpt: "Vários pilotos em fim de contrato começam já a procurar assento para a nova era da F1. Quem vai para onde?",
-            imageUrl: "https://images.unsplash.com/photo-1517409028941-0edbb3a48e89?w=800"
-          },
-          {
-            id: 3,
-            category: "Equipas",
-            title: "A Audi Prepara a sua Entrada Oficial",
-            excerpt: "A gigante alemã continua os preparativos intensivos para a sua estreia em 2026. Conhece os bastidores.",
-            imageUrl: "https://images.unsplash.com/photo-1532906103632-478a59489fc9?w=800"
-          }
-        ]);
-      }, 1500); 
-    });
   }
 };

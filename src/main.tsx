@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, type ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
@@ -6,18 +6,16 @@ import './i18n'
 
 import MainLayout from './layouts/MainLayout'
 import Home from './pages/Home'
-import Pilotos from './pages/Pilotos'
-import Classificacoes from './pages/Classificacoes'
-import Calendario from './pages/Calendario'
-import Resultados from './pages/Resultados'
-import TrackDetail from './pages/TrackDetail'
-import PilotDetail from './pages/PilotDetail'
-import TeamDetail from './pages/TeamDetail'
+
+// Pages other than Home are split into their own chunks and loaded on first visit
+const page = (load: () => Promise<{ default: ComponentType }>) => async () => ({ Component: (await load()).default })
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
+    // Shown while a lazy page loads on a direct visit
+    hydrateFallbackElement: <div className="min-h-screen" />,
     children: [
       {
         path: '/',
@@ -25,31 +23,39 @@ const router = createBrowserRouter([
       },
       {
         path: '/calendario',
-        element: <Calendario />,
+        lazy: page(() => import('./pages/Calendario')),
       },
       {
         path: '/resultados',
-        element: <Resultados />,
+        lazy: page(() => import('./pages/Resultados')),
       },
       {
         path: '/pilotos',
-        element: <Pilotos />,
+        lazy: page(() => import('./pages/Pilotos')),
       },
       {
         path: '/classificacoes',
-        element: <Classificacoes />,
+        lazy: page(() => import('./pages/Classificacoes')),
       },
       {
         path: '/pistas/:circuitId',
-        element: <TrackDetail />,
+        lazy: page(() => import('./pages/TrackDetail')),
       },
       {
         path: '/pilotos/:driverId',
-        element: <PilotDetail />,
+        lazy: page(() => import('./pages/PilotDetail')),
       },
       {
         path: '/equipas/:constructorId',
-        element: <TeamDetail />,
+        lazy: page(() => import('./pages/TeamDetail')),
+      },
+      {
+        path: '/noticias/:newsId',
+        lazy: page(() => import('./pages/NewsDetail')),
+      },
+      {
+        path: '*',
+        lazy: page(() => import('./pages/NotFound')),
       }
     ],
   },

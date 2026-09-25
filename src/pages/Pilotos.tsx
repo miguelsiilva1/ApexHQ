@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { service } from '../services/service';
 import type { Constructor, Driver } from '../types/api.types';
 import SeasonSelector from '../components/standings/SeasonSelector';
@@ -10,6 +11,7 @@ import { useF1Directory } from '../hooks/useF1Directory';
 import { legendDrivers, legendTeams } from '../data/legends';
 import { driverChampions, constructorChampions, countTitles } from '../data/champions';
 import { CURRENT_SEASON } from '../data/f1Media';
+import Reveal from '../components/common/Reveal';
 
 type Tab = 'grid' | 'legends';
 
@@ -42,6 +44,7 @@ const fetchSeasonGrid = async (season: string): Promise<TeamEntry[]> => {
 
 const Pilotos = () => {
   const { t } = useTranslation();
+  usePageMeta(t('drivers.title'));
 
   const [tab, setTab] = useState<Tab>('grid');
   const [season, setSeason] = useState<string>(CURRENT_SEASON);
@@ -114,7 +117,11 @@ const Pilotos = () => {
           <div className={styles.grid}>
             {loading
               ? [...Array(6)].map((_, index) => <div key={index} className={styles.skeleton}></div>)
-              : teams.map((team) => <TeamCard key={team.constructor.constructorId} team={team} season={season} />)}
+              : teams.map((team, index) => (
+                  <Reveal key={team.constructor.constructorId} index={index}>
+                    <TeamCard team={team} season={season} />
+                  </Reveal>
+                ))}
             {!loading && teams.length === 0 && !error && (
               <div className={styles.empty}>{t('drivers.no_data')}</div>
             )}
@@ -134,15 +141,16 @@ const Pilotos = () => {
           <div className={styles.legends_grid}>
             {legendsLoading
               ? [...Array(8)].map((_, index) => <div key={index} className={styles.legend_skeleton}></div>)
-              : legendDriverData.map((driver) => (
-                  <LegendCard
-                    key={driver.driverId}
-                    to={`/pilotos/${driver.driverId}`}
-                    name={`${driver.givenName} ${driver.familyName}`}
-                    nationality={driver.nationality}
-                    wikiUrl={driver.url}
-                    titles={countTitles(driverChampions, driver.driverId)}
-                  />
+              : legendDriverData.map((driver, index) => (
+                  <Reveal key={driver.driverId} index={index}>
+                    <LegendCard
+                      to={`/pilotos/${driver.driverId}`}
+                      name={`${driver.givenName} ${driver.familyName}`}
+                      nationality={driver.nationality}
+                      wikiUrl={driver.url}
+                      titles={countTitles(driverChampions, driver.driverId)}
+                    />
+                  </Reveal>
                 ))}
           </div>
 
@@ -150,15 +158,16 @@ const Pilotos = () => {
           <div className={styles.legends_grid}>
             {legendsLoading
               ? [...Array(4)].map((_, index) => <div key={index} className={styles.legend_skeleton}></div>)
-              : legendTeamData.map((team) => (
-                  <LegendCard
-                    key={team.constructorId}
-                    to={`/equipas/${team.constructorId}`}
-                    name={team.name}
-                    nationality={team.nationality}
-                    wikiUrl={team.url}
-                    titles={countTitles(constructorChampions, team.constructorId)}
-                  />
+              : legendTeamData.map((team, index) => (
+                  <Reveal key={team.constructorId} index={index}>
+                    <LegendCard
+                      to={`/equipas/${team.constructorId}`}
+                      name={team.name}
+                      nationality={team.nationality}
+                      wikiUrl={team.url}
+                      titles={countTitles(constructorChampions, team.constructorId)}
+                    />
+                  </Reveal>
                 ))}
           </div>
         </>

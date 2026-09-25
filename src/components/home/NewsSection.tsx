@@ -1,35 +1,39 @@
-import { useState, useEffect } from 'react';
-import { service } from '../../services';
+import { useState, useEffect, useCallback } from 'react';
 import { LoadingSpinner, ErrorAlert } from '../';
 import { useTranslation } from 'react-i18next';
+import { getLatestNews, type NewsItem } from '../../services/news';
+import NewsCard from '../news/NewsCard';
+import Reveal from '../common/Reveal';
+
+const HOME_NEWS_COUNT = 6;
 
 const NewsSection = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [newsData, setNewsData] = useState<any[]>([]);
+  const [newsData, setNewsData] = useState<NewsItem[]>([]);
 
-  const fetchNews = async () => {
+  const fetchNews = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await service.getLatestNews() as any[];
-      setNewsData(data);
-    } catch (err) {
+      const data = await getLatestNews();
+      setNewsData(data.slice(0, HOME_NEWS_COUNT));
+    } catch {
       setError(t('news.error'));
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     fetchNews();
-  }, []);
+  }, [fetchNews]);
 
   return (
     <section id="news-section" className={styles.newsSection}>
       <h2 className={styles.sectionTitle}>{t('news.title')}</h2>
-      
+
       {loading ? (
         <div className="flex justify-center p-12">
           <LoadingSpinner size="large" />
@@ -38,18 +42,10 @@ const NewsSection = () => {
         <ErrorAlert message={error} onRetry={fetchNews} />
       ) : (
         <div className={styles.newsGrid}>
-          {newsData.map((item) => (
-            <div key={item.id} className={styles.newsCard}>
-              <div 
-                className={styles.newsImagePlaceholder}
-                style={{ backgroundImage: `url(${item.imageUrl})` }}
-              ></div>
-              <div className={styles.newsCardContent}>
-                <p className={styles.newsCategory}>{item.category}</p>
-                <h3 className={styles.newsTitle}>{item.title}</h3>
-                <p className={styles.newsExcerpt}>{item.excerpt}</p>
-              </div>
-            </div>
+          {newsData.map((item, index) => (
+            <Reveal key={item.id} index={index} className="flex">
+              <NewsCard item={item} />
+            </Reveal>
           ))}
         </div>
       )}
@@ -61,12 +57,6 @@ const styles = {
   sectionTitle: "font-orbitron text-3xl font-bold text-f1-dark dark:text-white mb-8 border-l-4 border-f1-red pl-4 uppercase",
   newsSection: "w-full scroll-mt-24",
   newsGrid: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8",
-  newsCard: "bg-white dark:bg-[#151515] rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 overflow-hidden hover:-translate-y-2 hover:shadow-2xl hover:shadow-f1-red/20 transition-all duration-300 cursor-pointer group flex flex-col",
-  newsImagePlaceholder: "h-48 w-full bg-gray-300 dark:bg-gray-800 group-hover:opacity-80 transition-opacity bg-cover bg-center",
-  newsCardContent: "p-6 flex flex-col flex-grow",
-  newsCategory: "font-orbitron text-xs text-f1-red uppercase tracking-wider mb-2 font-bold",
-  newsTitle: "font-bold text-xl text-f1-dark dark:text-white mb-3 font-inter",
-  newsExcerpt: "font-inter text-gray-600 dark:text-gray-400 text-sm line-clamp-3",
 };
 
 export default NewsSection;

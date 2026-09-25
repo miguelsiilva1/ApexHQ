@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import hero1 from '../../assets/hero/1.jpg';
-import hero2 from '../../assets/hero/2.jpg';
-import hero3 from '../../assets/hero/3.jpg';
-import hero4 from '../../assets/hero/4.jpg';
-import hero5 from '../../assets/hero/5.jpg';
+import hero1 from '../../assets/hero/1.webp';
+import hero2 from '../../assets/hero/2.webp';
+import hero3 from '../../assets/hero/3.webp';
+import hero4 from '../../assets/hero/4.webp';
+import hero5 from '../../assets/hero/5.webp';
+
+const images = [hero1, hero2, hero3, hero4, hero5];
 
 const HeroSection = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const images = [hero1, hero2, hero3, hero4, hero5];
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   useEffect(() => {

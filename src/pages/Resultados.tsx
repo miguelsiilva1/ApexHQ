@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { ChevronLeft, Trophy, CalendarDays, Loader2 } from 'lucide-react';
 import { service } from '../services';
 import type { Race } from '../types/api.types';
@@ -8,7 +9,11 @@ import { ErrorAlert } from '../components';
 
 const Resultados = () => {
   const { t, i18n } = useTranslation();
+  usePageMeta(t('results.title'));
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  // ?round=N comes from the calendar; anything that isn't a round number is ignored
+  const requestedRound = /^\d{1,2}$/.test(searchParams.get('round') || '') ? searchParams.get('round') : null;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -25,7 +30,7 @@ const Resultados = () => {
         
         const [calData, lastRaceData] = await Promise.all([
           service.getCurrentCalendar(),
-          service.getLastRaceResults()
+          requestedRound ? service.getRaceResults(requestedRound) : service.getLastRaceResults()
         ]);
         
         const races = calData.MRData.RaceTable?.Races || [];
@@ -38,7 +43,7 @@ const Resultados = () => {
         } else {
           setError(t('results.error_load_last'));
         }
-      } catch (err) {
+      } catch {
         setError(t('results.error_load_generic'));
       } finally {
         setLoading(false);
@@ -46,10 +51,9 @@ const Resultados = () => {
     };
     
     fetchInitialData();
-  }, []);
+  }, [requestedRound, t]);
 
-  const handleRoundChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newRound = e.target.value;
+  const handleRoundChange = async (newRound: string) => {
     setSelectedRound(newRound);
     
     if (!newRound) return;
@@ -66,7 +70,7 @@ const Resultados = () => {
         setError(t('results.error_load_specific_unavailable'));
         setRaceResult(null);
       }
-    } catch (err) {
+    } catch {
       setError(t('results.error_load_specific'));
       setRaceResult(null);
     } finally {
@@ -105,7 +109,7 @@ const Resultados = () => {
             id="race-selector"
             className={styles.selectInput}
             value={selectedRound || ''}
-            onChange={handleRoundChange}
+            onChange={(e) => handleRoundChange(e.target.value)}
             disabled={loading || calendar.length === 0}
           >
             {calendar.map((race) => (
@@ -123,7 +127,7 @@ const Resultados = () => {
           <p className="text-gray-500 dark:text-gray-400 font-inter">{t('results.loading')}</p>
         </div>
       ) : error ? (
-        <ErrorAlert message={error} onRetry={() => selectedRound ? handleRoundChange({target: {value: selectedRound}} as any) : window.location.reload()} />
+        <ErrorAlert message={error} onRetry={() => selectedRound ? handleRoundChange(selectedRound) : window.location.reload()} />
       ) : raceResult && results.length > 0 ? (
         <div className={styles.contentArea}>
           

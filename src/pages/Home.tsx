@@ -2,8 +2,10 @@ import HeroSection from '../components/home/HeroSection';
 import NextGpSection from '../components/home/NextGpSection';
 import NewsSection from '../components/home/NewsSection';
 import AboutSection from '../components/home/AboutSection';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const Home = () => {
+  usePageMeta();
   return (
     <div className={styles.container}>
       <HeroSection />

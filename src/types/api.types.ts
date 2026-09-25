@@ -37,6 +37,18 @@ export interface Race {
   date: string;
   time: string;
   Results?: Result[];
+  FirstPractice?: RaceSession;
+  SecondPractice?: RaceSession;
+  ThirdPractice?: RaceSession;
+  Qualifying?: RaceSession;
+  Sprint?: RaceSession;
+  SprintQualifying?: RaceSession;
+  SprintShootout?: RaceSession;
+}
+
+export interface RaceSession {
+  date: string;
+  time?: string;
 }
 
 export interface Result {
@@ -110,6 +122,9 @@ export interface MRData {
   };
   ConstructorTable?: {
     Constructors: Constructor[];
+  };
+  CircuitTable?: {
+    Circuits: Circuit[];
   };
   SeasonTable?: {
     Seasons: { season: string; url: string }[];

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { service } from '../services/service';
 import type { DriverStanding, ConstructorStanding, Race } from '../types/api.types';
 
@@ -10,6 +11,7 @@ import FastestLapsTable from '../components/standings/FastestLapsTable';
 
 const Classificacoes = () => {
   const { t } = useTranslation();
+  usePageMeta(t('standings.title'));
   
   const [season, setSeason] = useState<string>("2026");
   const [driverStandings, setDriverStandings] = useState<DriverStanding[]>([]);

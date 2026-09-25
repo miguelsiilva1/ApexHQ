@@ -7,6 +7,8 @@ import type { Constructor, Driver } from '../types/api.types';
 import EntityImage from '../components/drivers/EntityImage';
 import { driverImages, teamLogos, teamCars, teamColors, DEFAULT_TEAM_COLOR, CURRENT_SEASON } from '../data/f1Media';
 import { constructorChampions, countTitles, isChampion as isSeasonChampion } from '../data/champions';
+import { usePageMeta } from '../hooks/usePageMeta';
+import { isValidId } from '../utils/format';
 
 interface TeamStats {
   wins: number;
@@ -24,9 +26,13 @@ const TeamDetail = () => {
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  usePageMeta(team?.name || t('drivers.title'), team ? t('team_detail.meta_description', { name: team.name }) : undefined);
 
   useEffect(() => {
-    if (!constructorId) return;
+    if (!isValidId(constructorId)) {
+      setLoading(false);
+      return;
+    }
 
     const fetchTeamData = async () => {
       setLoading(true);

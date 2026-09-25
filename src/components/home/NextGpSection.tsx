@@ -1,15 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { service } from '../../services';
 import { LoadingSpinner, ErrorAlert } from '../';
 import { useTranslation } from 'react-i18next';
+import type { Race } from '../../types/api.types';
+import { trackMaps } from '../../data/f1Media';
+import EntityImage from '../drivers/EntityImage';
 
 const NextGpSection = () => {
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [raceData, setRaceData] = useState<any>(null);
+  const [raceData, setRaceData] = useState<Race | null>(null);
 
-  const fetchNextRace = async () => {
+  const fetchNextRace = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -20,16 +25,16 @@ const NextGpSection = () => {
       } else {
         setError(t('next_gp.error_not_found'));
       }
-    } catch (err) {
+    } catch {
       setError(t('next_gp.error_server'));
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     fetchNextRace();
-  }, []);
+  }, [fetchNextRace]);
 
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);
@@ -46,7 +51,7 @@ const NextGpSection = () => {
       const dayNum = new Intl.DateTimeFormat(locale, { day: '2-digit' }).format(d);
       const time = timeStr.substring(0, 5);
       return `${dayNameCapitalized} ${dayNum}, ${time}`;
-    } catch (e) {
+    } catch {
       return timeStr.substring(0, 5);
     }
   };
@@ -67,11 +72,11 @@ const NextGpSection = () => {
           ) : raceData ? (
             <>
               <div className={styles.gpHeader}>
-                <h3 className={styles.gpName}>{t(`api.gps.${raceData.raceName}`, raceData.raceName) as string}</h3>
+                <h3 className={styles.gpName}>{t(`api.gps.${raceData.raceName}`, raceData.raceName)}</h3>
                 <p className={styles.gpDate}>
                   {raceData.FirstPractice ? formatDate(raceData.FirstPractice.date) : formatDate(raceData.date)} - {formatDate(raceData.date)}, {raceData.season}
                 </p>
-                <p className="font-inter text-xs opacity-75 mt-1">{raceData.Circuit.circuitName}, {t(`api.countries.${raceData.Circuit.Location.country}`, raceData.Circuit.Location.country) as string}</p>
+                <p className="font-inter text-xs opacity-75 mt-1">{raceData.Circuit.circuitName}, {t(`api.countries.${raceData.Circuit.Location.country}`, raceData.Circuit.Location.country)}</p>
               </div>
               <div className={styles.gpSessions}>
                 {/* First Practice */}
@@ -132,11 +137,28 @@ const NextGpSection = () => {
           ) : null}
         </div>
 
-        <div className={styles.nextGpTrackContainer}>
-          <div className={styles.nextGpTrackPlaceholder}>
-            <span className={styles.trackPlaceholderText}>{t('next_gp.view_track_details')}</span>
+        {raceData ? (
+          <Link to={`/pistas/${raceData.Circuit.circuitId}`} className={styles.nextGpTrackContainer}>
+            <div className={styles.nextGpTrackImage}>
+              <EntityImage
+                localSrc={trackMaps[raceData.Circuit.circuitId]}
+                wikiUrl={raceData.Circuit.url}
+                alt={raceData.Circuit.circuitName}
+                placeholder={raceData.Circuit.Location.locality}
+                className={styles.trackImage}
+                placeholderClassName="uppercase tracking-widest"
+              />
+            </div>
+            <span className={styles.trackLink}>
+              {t('next_gp.view_track_details')}
+              <ArrowRight size={16} />
+            </span>
+          </Link>
+        ) : (
+          <div className={styles.nextGpTrackContainer}>
+            <div className={styles.nextGpTrackPlaceholder}></div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
@@ -154,9 +176,11 @@ const styles = {
   session: "flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 last:border-0 last:pb-0",
   sessionName: "font-medium",
   sessionTime: "font-orbitron text-f1-red font-bold",
-  nextGpTrackContainer: "w-full h-full min-h-[300px] rounded-xl overflow-hidden cursor-pointer group shadow-xl border border-gray-200 dark:border-gray-800 transition-colors duration-300",
-  nextGpTrackPlaceholder: "w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center transition-transform duration-500 group-hover:scale-105",
-  trackPlaceholderText: "font-orbitron text-gray-500 dark:text-gray-400 font-bold tracking-widest uppercase opacity-50 group-hover:opacity-100 transition-opacity duration-300",
+  nextGpTrackContainer: "relative w-full h-full min-h-[300px] rounded-xl overflow-hidden group shadow-xl border border-gray-200 dark:border-gray-800 bg-white hover:border-f1-red/50 transition-colors duration-300 flex flex-col",
+  nextGpTrackImage: "flex-grow flex items-center justify-center p-6",
+  trackImage: "max-h-[340px] max-w-full object-contain transition-transform duration-500 group-hover:scale-105",
+  nextGpTrackPlaceholder: "w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 animate-pulse",
+  trackLink: "flex items-center justify-center gap-2 py-4 font-orbitron text-sm font-bold uppercase tracking-widest text-f1-dark border-t border-gray-200 group-hover:bg-f1-red group-hover:text-white group-hover:border-f1-red transition-colors duration-300",
 };
 
 export default NextGpSection;

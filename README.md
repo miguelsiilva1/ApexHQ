@@ -1,73 +1,125 @@
-# React + TypeScript + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img src="public/icon-512.png" alt="ApexHQ logo" width="120" />
 
-Currently, two official plugins are available:
+# ApexHQ
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**A modern Formula 1 hub — calendar, drivers, teams, standings and news, from 1950 to today.**
 
-## React Compiler
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white)
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+</div>
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Overview
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+ApexHQ is a responsive single-page application for Formula 1 fans. It combines live season data with the sport's full history, so every race, circuit, driver and team is one click away. The interface is bilingual (Portuguese/English), supports light and dark themes, and is built to feel as polished as an official broadcast graphic.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Features
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Area | What it offers |
+| --- | --- |
+| **Home** | Hero slideshow, next Grand Prix with full session schedule and clickable circuit map, latest F1 news with dedicated article pages. |
+| **Calendar** | Season selector, race cards with official circuit layouts, completed/next race status and direct links to results. |
+| **Circuits** | Detailed track map, all-time lap record, driver with most wins and recent winners. |
+| **Results** | Classification of every Grand Prix of the current season. |
+| **Drivers & Teams** | Season grid with driver photos, numbers and car liveries; career pages for drivers and teams; search across every driver and constructor since 1950; a curated *Legends* section. |
+| **Standings** | Drivers' and Constructors' championships and the DHL Fastest Lap Award, for any season. |
+
+**Across the app:** PT/EN translations · light/dark theme · page transitions and scroll animations (respecting *reduced motion*) · per-page titles and meta descriptions · mobile navigation · 404 page.
+
+## Tech Stack
+
+- **Core:** React 19, TypeScript, Vite (SWC)
+- **Styling:** Tailwind CSS, Google Fonts (Orbitron, Inter), Lucide icons
+- **Routing:** React Router 7 with lazy-loaded pages
+- **Internationalization:** i18next / react-i18next
+- **Animation:** Framer Motion
+- **Hosting:** Vercel (configuration included)
+
+## Data Sources
+
+| Source | Used for |
+| --- | --- |
+| [Jolpica F1 API](https://github.com/jolpica/jolpica-f1) (Ergast-compatible) | Calendars, results, standings, drivers, constructors and circuits |
+| Motorsport.com & Autosport RSS feeds | Latest news |
+| Wikipedia REST API | Images for historical drivers, teams and circuits |
+| Formula 1 media | Current-season driver photos, cars, team logos and circuit maps (bundled locally) |
+
+No API keys are required.
+
+## Getting Started
+
+**Prerequisites:** Node.js 20.19+ (required by Vite 7) and npm.
+
+```bash
+git clone https://github.com/miguelsiilva1/ApexHQ.git
+cd ApexHQ
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Then open [http://localhost:5173](http://localhost:5173).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Type-check and build for production (`dist/`) |
+| `npm run preview` | Serve the production build locally, with production security headers |
+| `npm run lint` | Run ESLint |
+
+## Project Structure
+
+```text
+src/
+├── assets/        # Bundled images: hero, drivers, teams (logos, cars), tracks
+├── components/    # Reusable UI, grouped by feature (home, calendar, drivers, news, standings, common)
+├── data/          # Static data: media maps, champions list, legends
+├── hooks/         # Custom hooks (page metadata, Wikipedia images, driver/team directory)
+├── layouts/       # Main layout: navbar, page transitions, footer
+├── locales/       # PT and EN translation files
+├── pages/         # Route-level views
+├── services/      # API client, F1 data service, news feeds
+├── types/         # Shared TypeScript types
+└── utils/         # Formatting and validation helpers
 ```
+
+## Architecture Notes
+
+- **Rate limiting:** the F1 API limits request bursts, so requests are made sequentially where possible and retried automatically on HTTP 429.
+- **News proxy:** RSS feeds don't allow browser requests (CORS). They are proxied through the same origin — by Vite in development and by Vercel rewrites in production.
+- **Untrusted content:** feed content is parsed as text only (never rendered as HTML), and only HTTPS links from the expected domains are kept. Route parameters are validated before they reach an API URL.
+- **Security headers:** `vercel.json` sets a Content Security Policy, HSTS, `X-Frame-Options` and related headers.
+- **Images:** current-season assets are bundled locally; older seasons fall back to Wikipedia, then to a text placeholder.
+
+## Deployment
+
+The project is ready for [Vercel](https://vercel.com): import the repository and keep the default Vite settings. `vercel.json` already provides the SPA fallback (so links like `/pilotos/senna` work when opened directly), the news-feed rewrites and the security headers.
+
+## Roadmap
+
+- [ ] User accounts with Firebase Authentication (favourite drivers and teams)
+- [ ] Firestore security rules
+- [ ] Production deployment
+- [ ] Additional statistics in Standings
+
+## Maintenance
+
+- **End of each season:** add the champions to `src/data/champions.ts`.
+- **New season:** update `CURRENT_SEASON` in `src/data/f1Media.ts` and refresh the bundled media in `src/assets/`.
+
+## Disclaimer
+
+ApexHQ is an unofficial fan project and is not associated with Formula 1 companies. F1, FORMULA ONE and related marks are trademarks of Formula One Licensing B.V. Team names, logos and images belong to their respective owners.
+
+---
+
+<div align="center">
+Developed by <a href="https://github.com/miguelsiilva1">Miguel Silva</a>
+</div>

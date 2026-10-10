@@ -10,6 +10,9 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-Auth-DD2C00?logo=firebase&logoColor=white)
+
+[Overview](#overview) · [Features](#features) · [Tech Stack](#tech-stack) · [Getting Started](#getting-started) · [Configuration](#configuration) · [Architecture](#architecture-notes)
 
 </div>
 
@@ -29,6 +32,7 @@ ApexHQ is a responsive single-page application for Formula 1 fans. It combines l
 | **Results**         | Classification of every Grand Prix of the current season.                                                                                                                         |
 | **Drivers & Teams** | Season grid with driver photos, numbers and car liveries; career pages for drivers and teams; search across every driver and constructor since 1950; a curated _Legends_ section. |
 | **Standings**       | Drivers' and Constructors' championships and the DHL Fastest Lap Award, for any season.                                                                                           |
+| **Accounts**        | Sign-up and sign-in with email and password or Google, password reset, and a persistent session.                                                                                  |
 
 **Across the app:** PT/EN translations · light/dark theme · page transitions and scroll animations (respecting _reduced motion_) · per-page titles and meta descriptions · mobile navigation · 404 page.
 
@@ -39,6 +43,7 @@ ApexHQ is a responsive single-page application for Formula 1 fans. It combines l
 - **Routing:** React Router 7 with lazy-loaded pages
 - **Internationalization:** i18next / react-i18next
 - **Animation:** Framer Motion
+- **Authentication:** Firebase Authentication (email/password and Google)
 - **Hosting:** Vercel (configuration included)
 
 ## Data Sources
@@ -50,7 +55,7 @@ ApexHQ is a responsive single-page application for Formula 1 fans. It combines l
 | Wikipedia REST API                                                          | Images for historical drivers, teams and circuits                                 |
 | Formula 1 media                                                             | Current-season driver photos, cars, team logos and circuit maps (bundled locally) |
 
-No API keys are required.
+The data sources need no API keys. Only the optional login uses a Firebase project (see [Configuration](#configuration)).
 
 ## Getting Started
 
@@ -74,18 +79,37 @@ Then open [http://localhost:5173](http://localhost:5173).
 | `npm run preview` | Serve the production build locally, with production security headers |
 | `npm run lint`    | Run ESLint                                                           |
 
+## Configuration
+
+Login is optional: without any configuration the app runs normally and the login page reports that sign-in is unavailable. To enable it:
+
+1. Create a project in the [Firebase console](https://console.firebase.google.com/) and register a web app.
+2. In **Authentication → Sign-in method**, enable **Email/Password** and **Google**.
+3. Copy `.env.example` to `.env.local` and fill in the web app config:
+
+| Variable                    | Value                                         |
+| --------------------------- | --------------------------------------------- |
+| `VITE_FIREBASE_API_KEY`     | Web API key                                   |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Auth domain (`<project-id>.firebaseapp.com`)  |
+| `VITE_FIREBASE_PROJECT_ID`  | Project ID                                    |
+| `VITE_FIREBASE_APP_ID`      | Web app ID                                    |
+
+4. For a deployed site, add the same variables to the hosting provider and add the site's domain under **Authentication → Settings → Authorized domains**.
+
+These values identify the Firebase project and are safe to ship in the browser bundle; access is enforced by the project's own settings.
+
 ## Project Structure
 
 ```text
 src/
 ├── assets/        # Bundled images: hero, drivers, teams (logos, cars), tracks
-├── components/    # Reusable UI, grouped by feature (home, calendar, drivers, news, standings, common)
+├── components/    # Reusable UI, grouped by feature (home, calendar, drivers, news, standings, common), auth provider
 ├── data/          # Static data: media maps, champions list, legends
-├── hooks/         # Custom hooks (page metadata, Wikipedia images, driver/team directory)
+├── hooks/         # Custom hooks (page metadata, Wikipedia images, driver/team directory, auth state)
 ├── layouts/       # Main layout: navbar, page transitions, footer
 ├── locales/       # PT and EN translation files
 ├── pages/         # Route-level views
-├── services/      # API client, F1 data service, news feeds
+├── services/      # API client, F1 data service, news feeds, Firebase auth
 ├── types/         # Shared TypeScript types
 └── utils/         # Formatting and validation helpers
 ```
@@ -96,6 +120,7 @@ src/
 - **News proxy:** RSS feeds don't allow browser requests (CORS). They are proxied through the same origin — by Vite in development and by Vercel rewrites in production.
 - **Untrusted content:** feed content is parsed as text only (never rendered as HTML), and only HTTPS links from the expected domains are kept. Route parameters are validated before they reach an API URL.
 - **Security headers:** `vercel.json` sets a Content Security Policy, HSTS, `X-Frame-Options` and related headers.
+- **Authentication:** the Firebase SDK lives in its own chunk and is loaded after the first render, so it adds nothing to the initial bundle. Sessions are restored on reload, and password-reset responses never reveal whether an account exists.
 - **Images:** current-season assets are bundled locally; older seasons fall back to Wikipedia, then to a text placeholder.
 
 ## Disclaimer

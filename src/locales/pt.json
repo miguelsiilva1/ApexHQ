@@ -3,7 +3,35 @@
     "home": "Início",
     "calendar": "Calendário",
     "drivers": "Pilotos",
-    "standings": "Classificações"
+    "standings": "Classificações",
+    "login": "Entrar",
+    "logout": "Sair"
+  },
+  "auth": {
+    "title_signin": "Entrar",
+    "title_signup": "Criar Conta",
+    "email": "Email",
+    "password": "Palavra-passe",
+    "submit_signin": "Entrar",
+    "submit_signup": "Criar Conta",
+    "google": "Continuar com Google",
+    "or": "ou",
+    "forgot_password": "Esqueceste-te da palavra-passe?",
+    "reset_sent": "Se existir uma conta com este email, enviámos um link para repor a palavra-passe.",
+    "switch_to_signup": "Ainda não tens conta? Cria uma",
+    "switch_to_signin": "Já tens conta? Entra",
+    "unavailable": "O login ainda não está disponível.",
+    "errors": {
+      "invalid_credential": "Email ou palavra-passe incorretos.",
+      "invalid_email": "O email não é válido.",
+      "email_in_use": "Já existe uma conta com este email.",
+      "weak_password": "A palavra-passe deve ter pelo menos 6 caracteres.",
+      "too_many_requests": "Demasiadas tentativas. Tenta novamente mais tarde.",
+      "network": "Sem ligação. Verifica a tua internet e tenta novamente.",
+      "popup_blocked": "O browser bloqueou a janela do Google. Permite pop-ups e tenta novamente.",
+      "email_required": "Escreve o teu email primeiro.",
+      "generic": "Não foi possível concluir o pedido. Tenta novamente."
+    }
   },
   "hero": {
     "title": "A Nova Era da F1 2026",

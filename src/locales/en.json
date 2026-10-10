@@ -3,7 +3,35 @@
     "home": "Home",
     "calendar": "Calendar",
     "drivers": "Drivers",
-    "standings": "Standings"
+    "standings": "Standings",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "auth": {
+    "title_signin": "Sign In",
+    "title_signup": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "submit_signin": "Sign In",
+    "submit_signup": "Create Account",
+    "google": "Continue with Google",
+    "or": "or",
+    "forgot_password": "Forgot your password?",
+    "reset_sent": "If an account exists for this email, we sent a link to reset the password.",
+    "switch_to_signup": "No account yet? Create one",
+    "switch_to_signin": "Already have an account? Sign in",
+    "unavailable": "Login is not available yet.",
+    "errors": {
+      "invalid_credential": "Incorrect email or password.",
+      "invalid_email": "The email is not valid.",
+      "email_in_use": "An account with this email already exists.",
+      "weak_password": "The password must have at least 6 characters.",
+      "too_many_requests": "Too many attempts. Try again later.",
+      "network": "No connection. Check your internet and try again.",
+      "popup_blocked": "The browser blocked the Google window. Allow pop-ups and try again.",
+      "email_required": "Enter your email first.",
+      "generic": "The request could not be completed. Try again."
+    }
   },
   "hero": {
     "title": "The New Era of F1 2026",

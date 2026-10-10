@@ -5,6 +5,7 @@ import './index.css'
 import './i18n'
 
 import MainLayout from './layouts/MainLayout'
+import { AuthProvider } from './components/AuthProvider'
 import Home from './pages/Home'
 
 // Pages other than Home are split into their own chunks and loaded on first visit
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
         lazy: page(() => import('./pages/NewsDetail')),
       },
       {
+        path: '/login',
+        lazy: page(() => import('./pages/Login')),
+      },
+      {
         path: '*',
         lazy: page(() => import('./pages/NotFound')),
       }
@@ -63,6 +68,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 )

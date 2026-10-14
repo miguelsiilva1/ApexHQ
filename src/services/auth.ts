@@ -1,4 +1,3 @@
-import { initializeApp } from 'firebase/app';
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -10,14 +9,7 @@ import {
   signOut,
   type User,
 } from 'firebase/auth';
-
-// Firebase web config is public by design; access is controlled by the Firebase project settings
-const app = initializeApp({
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-});
+import { app } from './firebase';
 
 const auth = getAuth(app);
 

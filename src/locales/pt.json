@@ -61,7 +61,11 @@
     "not_found": "Esta notícia já não está disponível.",
     "read_full": "Ler artigo completo em {{source}}",
     "language_note": "Notícias fornecidas por feeds RSS oficiais, em inglês.",
-    "more": "Mais Notícias"
+    "more": "Mais Notícias",
+    "translated_note": "Traduzido automaticamente do inglês com DeepL.",
+    "original_note": "Texto original em inglês.",
+    "show_original": "Ver original",
+    "show_translation": "Ver tradução"
   },
   "about": {
     "title": "Sobre a ApexHQ",
@@ -165,7 +169,20 @@
     "constructor": "Construtor",
     "wins_count_one": "{{count}} vitória",
     "wins_count_other": "{{count}} vitórias",
-    "meta_description": "Estatísticas, recordes e vencedores do circuito {{name}}."
+    "meta_description": "Estatísticas, recordes e vencedores do circuito {{name}}.",
+    "map": {
+      "title": "Mapa Interativo",
+      "mode_sectors": "Setores",
+      "mode_speed": "Velocidade",
+      "mode_drs": "DRS",
+      "sector": "Setor {{number}}",
+      "aria": "Traçado do circuito com a volta da pole de {{driver}} em {{year}}",
+      "drs_note_one": "{{count}} zona de DRS, dados de {{year}}. O DRS foi abolido em 2026.",
+      "drs_note_other": "{{count}} zonas de DRS, dados de {{year}}. O DRS foi abolido em 2026.",
+      "drs_none": "Sem dados de DRS: o circuito não recebeu corridas entre 2023 e 2025, e o DRS foi abolido em 2026.",
+      "reference": "Volta de referência: {{driver}}, {{time}} na qualificação de {{year}}",
+      "hint": "Passa o rato sobre a pista para ver a velocidade."
+    }
   },
   "results": {
     "title": "Resultados da Corrida",
@@ -252,5 +269,17 @@
     "title": "Página não encontrada",
     "text": "Parece que saíste da pista. A página que procuras não existe ou foi movida.",
     "button": "Voltar ao Início"
+  },
+  "favorites": {
+    "add": "Favorito",
+    "remove": "Remover dos favoritos"
+  },
+  "profile": {
+    "title": "Perfil",
+    "favorite_drivers": "Pilotos Favoritos",
+    "favorite_teams": "Equipas Favoritas",
+    "no_drivers": "Ainda não tens pilotos favoritos.",
+    "no_teams": "Ainda não tens equipas favoritas.",
+    "browse": "Explorar pilotos e equipas"
   }
 }

@@ -60,7 +60,7 @@ const MainLayout = () => {
     }
     return (
       <div className={`${styles.user} ${extraClass}`}>
-        <span className={styles.user_name}>{user.displayName || user.email}</span>
+        <Link to="/perfil" className={styles.user_name}>{user.displayName || user.email}</Link>
         <button onClick={logout} className={styles.btn_logout}>
           {t('navbar.logout')}
         </button>
@@ -183,7 +183,7 @@ const styles = {
   theme_toggle: "text-xl hover:scale-110 transition-transform cursor-pointer text-f1-dark dark:text-f1-light-gray",
   btn_login: "px-4 py-1.5 bg-f1-red text-white text-sm font-orbitron uppercase tracking-wider rounded hover:bg-red-700 transition-colors duration-300",
   user: "items-center gap-3",
-  user_name: "max-w-[10rem] truncate text-sm font-inter text-f1-dark dark:text-f1-light-gray",
+  user_name: "max-w-[10rem] truncate text-sm font-inter text-f1-dark dark:text-f1-light-gray hover:text-f1-red transition-colors",
   btn_logout: "px-3 py-1.5 border border-f1-red text-f1-red text-sm font-orbitron uppercase tracking-wider rounded hover:bg-f1-red hover:text-white transition-colors duration-300",
   menu_toggle: "md:hidden text-f1-dark dark:text-f1-light-gray hover:text-f1-red transition-colors",
   mobile_menu: "md:hidden container mx-auto flex flex-col gap-4 pt-4 overflow-hidden font-orbitron text-sm tracking-widest text-f1-dark dark:text-f1-light-gray",

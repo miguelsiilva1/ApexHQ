@@ -6,6 +6,7 @@ import './i18n'
 
 import MainLayout from './layouts/MainLayout'
 import { AuthProvider } from './components/AuthProvider'
+import { FavoritesProvider } from './components/FavoritesProvider'
 import Home from './pages/Home'
 
 // Pages other than Home are split into their own chunks and loaded on first visit
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
         lazy: page(() => import('./pages/NewsDetail')),
       },
       {
+        path: '/perfil',
+        lazy: page(() => import('./pages/Profile')),
+      },
+      {
         path: '/login',
         lazy: page(() => import('./pages/Login')),
       },
@@ -69,7 +74,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <FavoritesProvider>
+        <RouterProvider router={router} />
+      </FavoritesProvider>
     </AuthProvider>
   </StrictMode>,
 )

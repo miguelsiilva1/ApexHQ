@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, ExternalLink, Newspaper } from 'lucide-react';
-import { getLatestNews, type NewsItem } from '../services/news';
+import { ArrowLeft, ExternalLink, Languages, Newspaper } from 'lucide-react';
+import { getLatestNews, getNewsTranslation, type NewsItem, type NewsTranslation } from '../services/news';
 import NewsCard from '../components/news/NewsCard';
 import { formatNewsDate } from '../utils/format';
 import { usePageMeta } from '../hooks/usePageMeta';
@@ -17,7 +17,11 @@ const NewsDetail = () => {
   const [related, setRelated] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  usePageMeta(article?.title || t('news.title'), article?.paragraphs[0]);
+  const [translation, setTranslation] = useState<NewsTranslation | null>(null);
+  const [showOriginal, setShowOriginal] = useState(false);
+  const isPortuguese = i18n.language?.startsWith('pt');
+  const content = translation && !showOriginal ? translation : article;
+  usePageMeta(content?.title || t('news.title'), content?.paragraphs[0]);
 
   useEffect(() => {
     const loadArticle = async () => {
@@ -36,6 +40,20 @@ const NewsDetail = () => {
 
     loadArticle();
   }, [newsId, t]);
+
+  // The feeds are in English; in Portuguese the article is translated (falls back to the original on error)
+  useEffect(() => {
+    setTranslation(null);
+    setShowOriginal(false);
+    if (!article || !isPortuguese) return;
+    let active = true;
+    getNewsTranslation(article.id)
+      .then((result) => active && setTranslation(result))
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [article, isPortuguese]);
 
   if (loading) {
     return (
@@ -59,6 +77,8 @@ const NewsDetail = () => {
       </div>
     );
   }
+
+  const shown = translation && !showOriginal ? translation : article;
 
   return (
     <div className={styles.container}>
@@ -84,10 +104,10 @@ const NewsDetail = () => {
             <time dateTime={article.date}>{formatNewsDate(article.date, i18n.language)}</time>
           </div>
 
-          <h1 className={styles.title}>{article.title}</h1>
+          <h1 className={styles.title}>{shown.title}</h1>
 
           <div className={styles.text}>
-            {article.paragraphs.map((paragraph, index) => (
+            {shown.paragraphs.map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
           </div>
@@ -96,7 +116,17 @@ const NewsDetail = () => {
             {t('news.read_full', { source: article.source })}
             <ExternalLink size={16} />
           </a>
-          <p className={styles.language_note}>{t('news.language_note')}</p>
+          {translation ? (
+            <p className={styles.language_note}>
+              <Languages size={14} />
+              {t(showOriginal ? 'news.original_note' : 'news.translated_note')}
+              <button onClick={() => setShowOriginal(!showOriginal)} className={styles.toggle}>
+                {t(showOriginal ? 'news.show_translation' : 'news.show_original')}
+              </button>
+            </p>
+          ) : (
+            <p className={styles.language_note}>{t('news.language_note')}</p>
+          )}
         </div>
       </article>
 
@@ -132,7 +162,8 @@ const styles = {
   title: "font-orbitron text-3xl md:text-5xl font-bold text-f1-dark dark:text-white leading-tight mb-8",
   text: "font-inter text-lg leading-relaxed text-gray-700 dark:text-gray-300 space-y-5 mb-10",
   source_link: "inline-flex items-center gap-2 px-6 py-3 bg-f1-red text-white font-orbitron text-sm uppercase tracking-wider rounded-lg hover:bg-red-700 transition-colors",
-  language_note: "mt-4 font-inter text-xs text-gray-400",
+  language_note: "mt-4 flex flex-wrap items-center gap-2 font-inter text-xs text-gray-400",
+  toggle: "text-f1-red font-semibold hover:underline",
 
   related_title: "font-orbitron text-2xl font-bold text-f1-dark dark:text-white mb-8 border-l-4 border-f1-red pl-4 uppercase",
   related_grid: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8",

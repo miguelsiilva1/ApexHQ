@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { AUTH_ENABLED, useAuth } from '../hooks/useAuth';
@@ -23,6 +23,9 @@ const Login = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
+  // Pages that require an account (e.g. favourites) send the visitor here and get them back after login
+  const from = (useLocation().state as { from?: string } | null)?.from;
+  const redirectTo = from?.startsWith('/') && !from.startsWith('//') ? from : '/';
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,8 +37,8 @@ const Login = () => {
   usePageMeta(title);
 
   useEffect(() => {
-    if (user) navigate('/', { replace: true });
-  }, [user, navigate]);
+    if (user) navigate(redirectTo, { replace: true });
+  }, [user, navigate, redirectTo]);
 
   const run = async (action: (auth: AuthService) => Promise<unknown>, doneKey = '') => {
     setErrorKey('');

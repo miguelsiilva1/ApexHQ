@@ -26,3 +26,6 @@ dist-ssr
 *.sln
 *.sw?
 .agents
+# FastF1 (scripts/track_layouts.py)
+.venv
+.fastf1-cache

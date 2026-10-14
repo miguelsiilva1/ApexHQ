@@ -1,0 +1,28 @@
+rules_version = '2';
+
+// Deploy with: firebase deploy --only firestore:rules
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // users/{uid} = { drivers: { id: name }, teams: { id: name } }, private to its owner
+    match /users/{uid} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid && validFavorites(request.resource.data);
+    }
+
+    // Everything else is closed
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function validFavorites(data) {
+      return data.keys().hasOnly(['drivers', 'teams'])
+        && (!('drivers' in data) || validMap(data.drivers))
+        && (!('teams' in data) || validMap(data.teams));
+    }
+
+    // Rules can't loop over map entries, so only the type and size are enforced
+    function validMap(favorites) {
+      return favorites is map && favorites.size() <= 50;
+    }
+  }
+}

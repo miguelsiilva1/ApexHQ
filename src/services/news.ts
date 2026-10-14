@@ -104,3 +104,27 @@ export const getLatestNews = () => {
   }
   return request;
 };
+
+export interface NewsTranslation {
+  title: string;
+  paragraphs: string[];
+}
+
+const translations = new Map<string, Promise<NewsTranslation>>();
+
+// Portuguese version of an article (title and summary), translated by DeepL in api/translate-news.ts
+export const getNewsTranslation = (id: string) => {
+  let translation = translations.get(id);
+  if (!translation) {
+    translation = (async () => {
+      const response = await fetch(`/api/translate-news?id=${encodeURIComponent(id)}`);
+      if (!response.ok) throw new Error(`Translation error: ${response.status}`);
+      const data: { title: string; description: string } = await response.json();
+      // DeepL returns HTML; like the feeds, it is reduced to plain text and never rendered as HTML
+      return { title: toParagraphs(data.title).join(' '), paragraphs: toParagraphs(data.description) };
+    })();
+    translations.set(id, translation);
+    translation.catch(() => translations.delete(id));
+  }
+  return translation;
+};

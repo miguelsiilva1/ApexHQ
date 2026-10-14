@@ -61,7 +61,11 @@
     "not_found": "This article is no longer available.",
     "read_full": "Read the full article on {{source}}",
     "language_note": "News provided by official RSS feeds.",
-    "more": "More News"
+    "more": "More News",
+    "translated_note": "Automatically translated from English with DeepL.",
+    "original_note": "Original English text.",
+    "show_original": "Show original",
+    "show_translation": "Show translation"
   },
   "about": {
     "title": "About ApexHQ",
@@ -165,7 +169,20 @@
     "constructor": "Constructor",
     "wins_count_one": "{{count}} win",
     "wins_count_other": "{{count}} wins",
-    "meta_description": "Stats, records and winners of {{name}}."
+    "meta_description": "Stats, records and winners of {{name}}.",
+    "map": {
+      "title": "Interactive Map",
+      "mode_sectors": "Sectors",
+      "mode_speed": "Speed",
+      "mode_drs": "DRS",
+      "sector": "Sector {{number}}",
+      "aria": "Circuit layout with the pole lap by {{driver}} in {{year}}",
+      "drs_note_one": "{{count}} DRS zone, {{year}} data. DRS was abolished in 2026.",
+      "drs_note_other": "{{count}} DRS zones, {{year}} data. DRS was abolished in 2026.",
+      "drs_none": "No DRS data: the circuit hosted no races between 2023 and 2025, and DRS was abolished in 2026.",
+      "reference": "Reference lap: {{driver}}, {{time}} in {{year}} qualifying",
+      "hint": "Hover over the track to see the speed."
+    }
   },
   "results": {
     "title": "Race Results",
@@ -252,5 +269,17 @@
     "title": "Page not found",
     "text": "Looks like you went off track. The page you are looking for doesn't exist or has moved.",
     "button": "Back to Home"
+  },
+  "favorites": {
+    "add": "Favourite",
+    "remove": "Remove from favourites"
+  },
+  "profile": {
+    "title": "Profile",
+    "favorite_drivers": "Favourite Drivers",
+    "favorite_teams": "Favourite Teams",
+    "no_drivers": "You don't have favourite drivers yet.",
+    "no_teams": "You don't have favourite teams yet.",
+    "browse": "Browse drivers and teams"
   }
 }

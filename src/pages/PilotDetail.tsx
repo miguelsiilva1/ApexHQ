@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Trophy, Flag, Medal, Timer, CalendarDays, History, ExternalLink } from 'lucide-react';
 import { service, fetchAllPages } from '../services/service';
 import type { Constructor, Driver, Race } from '../types/api.types';
+import FavoriteButton from '../components/favorites/FavoriteButton';
 import EntityImage from '../components/drivers/EntityImage';
 import { driverImages, CURRENT_SEASON } from '../data/f1Media';
 import { driverChampions, countTitles } from '../data/champions';
@@ -181,10 +182,13 @@ const PilotDetail = () => {
                 {birthDate}{isActive && ` · ${t('driver_detail.age', { age: getAge(driver.dateOfBirth) })}`}
               </span>
             </div>
-            <a href={driver.url} target="_blank" rel="noopener noreferrer" className={styles.wiki_link}>
-              {t('driver_detail.wikipedia')}
-              <ExternalLink size={14} />
-            </a>
+            <div className={styles.hero_actions}>
+              <a href={driver.url} target="_blank" rel="noopener noreferrer" className={styles.wiki_link}>
+                {t('driver_detail.wikipedia')}
+                <ExternalLink size={14} />
+              </a>
+              <FavoriteButton kind="drivers" id={driver.driverId} name={`${driver.givenName} ${driver.familyName}`} />
+            </div>
           </div>
         </div>
 
@@ -266,6 +270,7 @@ const styles = {
   hero_name: "font-orbitron text-4xl md:text-6xl font-bold text-white mb-6 leading-tight",
   hero_tags: "flex flex-wrap justify-center md:justify-start gap-3 mb-6",
   tag: "bg-white/10 text-gray-300 px-3 py-1 rounded-full text-sm font-inter",
+  hero_actions: "flex flex-wrap items-center justify-center md:justify-start gap-4",
   wiki_link: "inline-flex items-center gap-2 text-f1-red hover:text-red-400 font-inter text-sm font-semibold transition-colors",
 
   section: "p-10 md:p-16",

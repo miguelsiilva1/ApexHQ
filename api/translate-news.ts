@@ -6,7 +6,9 @@ const FEEDS: Record<string, string> = {
   as: 'https://www.autosport.com/rss/f1/news/',
 };
 
-const ID_PATTERN = /^(ms|as)-(\d{1,12})$/;
+// The raw query must be exactly "?id=<feed>-<guid>": extra parameters or percent-encoded variants would
+// create new CDN cache keys and let repeated requests for the same article reach DeepL
+const QUERY_PATTERN = /^\?id=(ms|as)-([1-9]\d{0,11})$/;
 const MAX_CHARS = 5000;
 
 const json = (body: unknown, status: number, cache = 'no-store') =>
@@ -28,14 +30,15 @@ export async function GET(request: Request): Promise<Response> {
   const key = process.env.DEEPL_API_KEY;
   if (!key) return json({ error: 'Translation unavailable' }, 503);
 
-  const match = new URL(request.url).searchParams.get('id')?.match(ID_PATTERN);
+  const match = new URL(request.url).search.match(QUERY_PATTERN);
   if (!match) return json({ error: 'Invalid id' }, 400);
   const [, feed, guid] = match;
 
   const feedResponse = await fetch(FEEDS[feed]);
   if (!feedResponse.ok) return json({ error: 'Feed unavailable' }, 502);
   const item = findItem(await feedResponse.text(), guid);
-  if (!item) return json({ error: 'Not found' }, 404);
+  // Briefly cached: an id requested just before the article is published must not stay blocked
+  if (!item) return json({ error: 'Not found' }, 404, 'public, s-maxage=30');
 
   const texts = [field(item, 'title'), field(item, 'description')];
   if (texts.join('').length > MAX_CHARS) return json({ error: 'Too long' }, 413);

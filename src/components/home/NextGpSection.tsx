@@ -6,6 +6,7 @@ import { LoadingSpinner, ErrorAlert } from '../';
 import { useTranslation } from 'react-i18next';
 import type { Race } from '../../types/api.types';
 import { trackMaps } from '../../data/f1Media';
+import { circuitName } from '../../utils/format';
 import EntityImage from '../drivers/EntityImage';
 
 const NextGpSection = () => {
@@ -76,7 +77,7 @@ const NextGpSection = () => {
                 <p className={styles.gpDate}>
                   {raceData.FirstPractice ? formatDate(raceData.FirstPractice.date) : formatDate(raceData.date)} - {formatDate(raceData.date)}, {raceData.season}
                 </p>
-                <p className="font-inter text-xs opacity-75 mt-1">{raceData.Circuit.circuitName}, {t(`api.countries.${raceData.Circuit.Location.country}`, raceData.Circuit.Location.country)}</p>
+                <p className="font-inter text-xs opacity-75 mt-1">{circuitName(t, raceData.Circuit)}, {t(`api.countries.${raceData.Circuit.Location.country}`, raceData.Circuit.Location.country)}</p>
               </div>
               <div className={styles.gpSessions}>
                 {/* First Practice */}

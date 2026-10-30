@@ -5,6 +5,7 @@ import { usePageMeta } from '../hooks/usePageMeta';
 import { ChevronLeft, Trophy, CalendarDays, Loader2 } from 'lucide-react';
 import { service } from '../services';
 import type { Race } from '../types/api.types';
+import { circuitName } from '../utils/format';
 import { ErrorAlert } from '../components';
 
 const Resultados = () => {
@@ -134,7 +135,7 @@ const Resultados = () => {
           <div className={styles.raceHeader}>
             <h2 className={styles.raceName}>{t(`api.gps.${raceResult.raceName}`, raceResult.raceName) as string}</h2>
             <p className={styles.raceDetails}>
-              {raceResult.Circuit.circuitName}, {t(`api.countries.${raceResult.Circuit.Location.country}`, raceResult.Circuit.Location.country) as string} | {new Date(raceResult.date).toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'pt-PT')}
+              {circuitName(t, raceResult.Circuit)}, {t(`api.countries.${raceResult.Circuit.Location.country}`, raceResult.Circuit.Location.country) as string} | {new Date(raceResult.date).toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'pt-PT')}
             </p>
           </div>
 

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import type { Race } from '../../types/api.types';
 import EntityImage from '../drivers/EntityImage';
 import { trackOutlines, CURRENT_SEASON } from '../../data/f1Media';
+import { circuitName } from '../../utils/format';
 
 export type RaceStatus = 'done' | 'next' | 'upcoming';
 
@@ -60,7 +61,7 @@ const RaceCard = ({ race, status }: RaceCardProps) => {
           <div className={styles.info_item}>
             <MapPin size={16} className={styles.info_icon} />
             <span className="truncate">
-              {race.Circuit.circuitName}, {t(`api.countries.${race.Circuit.Location.country}`, race.Circuit.Location.country)}
+              {circuitName(t, race.Circuit)}, {t(`api.countries.${race.Circuit.Location.country}`, race.Circuit.Location.country)}
             </span>
           </div>
           <div className={styles.info_item}>

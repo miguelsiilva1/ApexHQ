@@ -1,7 +1,25 @@
 const BASE_URL = 'https://api.jolpi.ca/ergast/f1';
 const MAX_RETRIES = 3;
+const CACHE_TTL_MS = 10 * 60 * 1000;
 
-export async function fetchFromAPI<T>(endpoint: string): Promise<T> {
+// Responses (and in-flight requests) are shared by endpoint, so pages that ask for the
+// same data in parallel or on revisit hit the network once per TTL
+const cache = new Map<string, { expires: number; promise: Promise<unknown> }>();
+
+export function fetchFromAPI<T>(endpoint: string): Promise<T> {
+  const cached = cache.get(endpoint);
+  if (cached && cached.expires > Date.now()) return cached.promise as Promise<T>;
+
+  const promise = request<T>(endpoint);
+  cache.set(endpoint, { expires: Date.now() + CACHE_TTL_MS, promise });
+  // Failed requests are not cached, so a retry goes back to the network
+  promise.catch(() => {
+    if (cache.get(endpoint)?.promise === promise) cache.delete(endpoint);
+  });
+  return promise;
+}
+
+async function request<T>(endpoint: string): Promise<T> {
   try {
     let url = `${BASE_URL}${endpoint}`;
     if (endpoint.includes('?')) {

@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -17,7 +18,12 @@ export const onUserChange = (callback: (user: User | null) => void) => onAuthSta
 
 export const signIn = (email: string, password: string) => signInWithEmailAndPassword(auth, email, password);
 
-export const signUp = (email: string, password: string) => createUserWithEmailAndPassword(auth, email, password);
+export const signUp = async (email: string, password: string) => {
+  const credential = await createUserWithEmailAndPassword(auth, email, password);
+  // The account already exists at this point, so a failed email must not fail the sign-up
+  sendEmailVerification(credential.user).catch(() => {});
+  return credential;
+};
 
 export const signInWithGoogle = () => signInWithPopup(auth, new GoogleAuthProvider());
 

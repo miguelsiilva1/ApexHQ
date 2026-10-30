@@ -9,9 +9,11 @@ interface LegendCardProps {
   nationality: string;
   wikiUrl: string;
   titles: number;
+  // Car photos are framed from the centre; portraits from near the top so faces aren't cut
+  landscape?: boolean;
 }
 
-const LegendCard = ({ to, name, nationality, wikiUrl, titles }: LegendCardProps) => {
+const LegendCard = ({ to, name, nationality, wikiUrl, titles, landscape = false }: LegendCardProps) => {
   const { t } = useTranslation();
 
   return (
@@ -21,7 +23,7 @@ const LegendCard = ({ to, name, nationality, wikiUrl, titles }: LegendCardProps)
           wikiUrl={wikiUrl}
           alt={name}
           placeholder={name.charAt(0)}
-          className={styles.image}
+          className={`${styles.image} ${landscape ? 'object-center' : 'object-[center_20%]'}`}
           placeholderClassName="text-5xl"
         />
       </div>
@@ -42,7 +44,7 @@ const LegendCard = ({ to, name, nationality, wikiUrl, titles }: LegendCardProps)
 const styles = {
   card: "bg-white dark:bg-[#151515] rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-f1-red/50 hover:shadow-2xl transition-all duration-300 group flex flex-col",
   image_wrapper: "h-56 bg-gray-100 dark:bg-[#1a1a1a] overflow-hidden",
-  image: "w-full h-full object-cover object-top grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500",
+  image: "w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500",
   body: "p-5 flex flex-col gap-1",
   name: "font-orbitron text-lg font-bold text-f1-dark dark:text-white uppercase",
   nationality: "font-inter text-sm text-gray-500 dark:text-gray-400",

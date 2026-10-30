@@ -8,6 +8,7 @@ import SeasonSelector from '../components/standings/SeasonSelector';
 import DriverStandingsTable from '../components/standings/DriverStandingsTable';
 import ConstructorStandingsTable from '../components/standings/ConstructorStandingsTable';
 import FastestLapsTable from '../components/standings/FastestLapsTable';
+import ChampionshipMath from '../components/standings/ChampionshipMath';
 
 const Classificacoes = () => {
   const { t } = useTranslation();
@@ -17,6 +18,8 @@ const Classificacoes = () => {
   const [driverStandings, setDriverStandings] = useState<DriverStanding[]>([]);
   const [constructorStandings, setConstructorStandings] = useState<ConstructorStanding[]>([]);
   const [fastestLaps, setFastestLaps] = useState<Race[]>([]);
+  const [calendar, setCalendar] = useState<Race[]>([]);
+  const [standingsRound, setStandingsRound] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,10 +28,11 @@ const Classificacoes = () => {
       setLoading(true);
       setError(null);
       try {
-        const [driverRes, constructorRes, fastestRes] = await Promise.all([
+        const [driverRes, constructorRes, fastestRes, calendarRes] = await Promise.all([
           service.getDriverStandingsBySeason(season),
           service.getConstructorStandingsBySeason(season),
-          service.getFastestLapsBySeason(season)
+          service.getFastestLapsBySeason(season),
+          service.getCalendarBySeason(season)
         ]);
 
         const dStandings = driverRes.MRData.StandingsTable?.StandingsLists[0]?.DriverStandings || [];
@@ -38,6 +42,8 @@ const Classificacoes = () => {
         setDriverStandings(dStandings);
         setConstructorStandings(cStandings);
         setFastestLaps(fLaps);
+        setCalendar(calendarRes.MRData.RaceTable?.Races || []);
+        setStandingsRound(Number(driverRes.MRData.StandingsTable?.StandingsLists[0]?.round || 0));
       } catch (err) {
         console.error("Failed to fetch standings:", err);
         setError(t('standings.error_load'));
@@ -66,6 +72,14 @@ const Classificacoes = () => {
       )}
 
       <div className="flex flex-col gap-12">
+        {!loading && (
+          <ChampionshipMath
+            drivers={driverStandings}
+            constructors={constructorStandings}
+            races={calendar}
+            round={standingsRound}
+          />
+        )}
         <DriverStandingsTable standings={driverStandings} loading={loading} />
         <ConstructorStandingsTable standings={constructorStandings} loading={loading} />
         <FastestLapsTable races={fastestLaps} loading={loading} />

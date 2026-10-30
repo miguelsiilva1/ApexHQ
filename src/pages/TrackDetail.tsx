@@ -10,7 +10,7 @@ import { trackMaps } from '../data/f1Media';
 import { loadTrackLayout } from '../data/trackLayouts';
 import TrackMap from '../components/tracks/TrackMap';
 import { usePageMeta } from '../hooks/usePageMeta';
-import { isValidId } from '../utils/format';
+import { circuitName, isValidId } from '../utils/format';
 
 // Ergast lap times are "1:23.456" or "59.123"
 const lapTimeToMs = (time: string) => {
@@ -32,7 +32,7 @@ const TrackDetail = () => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  usePageMeta(circuit?.circuitName || t('track.title'), circuit ? t('track.meta_description', { name: circuit.circuitName }) : undefined);
+  usePageMeta(circuit ? circuitName(t, circuit) : t('track.title'), circuit ? t('track.meta_description', { name: circuitName(t, circuit) }) : undefined);
 
   useEffect(() => {
     if (!isValidId(circuitId)) {
@@ -142,7 +142,7 @@ const TrackDetail = () => {
           <div className={styles.hero_pattern} style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
 
           <div className="z-10 text-center w-full">
-            <h1 className={styles.hero_title}>{circuit.circuitName}</h1>
+            <h1 className={styles.hero_title}>{circuitName(t, circuit)}</h1>
             <div className={styles.hero_location}>
               <MapPin className="text-f1-red" size={24} />
               <span>{circuit.Location.locality}, {t(`api.countries.${circuit.Location.country}`, circuit.Location.country)}</span>

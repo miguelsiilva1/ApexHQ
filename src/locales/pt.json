@@ -140,7 +140,19 @@
     "wins": "Vit",
     "fastest_laps": "Voltas Rápidas",
     "loading": "A carregar classificações...",
-    "error_load": "Erro ao carregar as classificações. Tente novamente."
+    "error_load": "Erro ao carregar as classificações. Tente novamente.",
+    "math": {
+      "title": "Corrida ao Título",
+      "remaining": "Faltam {{races}} corridas e {{sprints}} sprints.",
+      "remaining_no_sprints": "Faltam {{races}} corridas.",
+      "available": "{{points}} pts em jogo",
+      "contenders_one": "{{count}} candidato",
+      "contenders_other": "{{count}} candidatos",
+      "clinched": "Campeão matematicamente garantido",
+      "champion": "Campeão",
+      "match_point": "{{name}} pode garantir o título já no próximo fim de semana.",
+      "bar_hint": "A barra compara a diferença para o líder com os pontos ainda em jogo: cheia = empatado com o líder."
+    }
   },
   "calendar": {
     "title": "Calendário",
@@ -203,7 +215,12 @@
     "stage": "Etapa"
   },
   "error": {
-    "retry": "Tentar Novamente"
+    "retry": "Tentar Novamente",
+    "default_title": "Algo correu mal",
+    "default_msg": "Ocorreu um erro ao processar o teu pedido. Verifica a tua ligação à internet e tenta novamente.",
+    "page_title": "Não foi possível carregar a página",
+    "page_msg": "O site pode ter sido atualizado há pouco. Recarrega a página para obter a versão mais recente.",
+    "reload": "Recarregar"
   },
   "api": {
     "gps": {
@@ -263,6 +280,53 @@
       "Russia": "Rússia",
       "France": "França",
       "Germany": "Alemanha"
+    },
+    "circuits": {
+      "adelaide": "Circuito Citadino de Adelaide",
+      "albert_park": "Circuito de Albert Park",
+      "americas": "Circuito das Américas",
+      "anderstorp": "Circuito Escandinavo de Anderstorp",
+      "bahrain": "Circuito Internacional do Bahrain",
+      "baku": "Circuito Citadino de Baku",
+      "bremgarten": "Circuito de Bremgarten",
+      "buddh": "Circuito Internacional de Buddh",
+      "catalunya": "Circuito de Barcelona-Catalunha",
+      "charade": "Circuito de Charade",
+      "detroit": "Circuito Citadino de Detroit",
+      "imola": "Autódromo Enzo e Dino Ferrari",
+      "indianapolis": "Autódromo de Indianápolis",
+      "istanbul": "Istanbul Park",
+      "jeddah": "Circuito da Corniche de Jeddah",
+      "las_vegas": "Circuito Citadino de Las Vegas",
+      "losail": "Circuito Internacional de Lusail",
+      "magny_cours": "Circuito de Nevers Magny-Cours",
+      "marina_bay": "Circuito Citadino de Marina Bay",
+      "miami": "Autódromo Internacional de Miami",
+      "monaco": "Circuito do Mónaco",
+      "monsanto": "Circuito de Monsanto",
+      "monza": "Autódromo Nacional de Monza",
+      "mosport": "Circuito Internacional de Mosport",
+      "mugello": "Autódromo Internacional de Mugello",
+      "okayama": "Circuito Internacional de Okayama",
+      "pedralbes": "Circuito de Pedralbes",
+      "pescara": "Circuito de Pescara",
+      "phoenix": "Circuito Citadino de Phoenix",
+      "ricard": "Circuito Paul Ricard",
+      "riverside": "Circuito Internacional de Riverside",
+      "sebring": "Circuito Internacional de Sebring",
+      "sepang": "Circuito Internacional de Sepang",
+      "shanghai": "Circuito Internacional de Xangai",
+      "silverstone": "Circuito de Silverstone",
+      "sochi": "Autódromo de Sochi",
+      "spa": "Circuito de Spa-Francorchamps",
+      "suzuka": "Circuito de Suzuka",
+      "tremblant": "Circuito Mont-Tremblant",
+      "valencia": "Circuito Citadino de Valência",
+      "vegas": "Circuito Citadino de Las Vegas Strip",
+      "villeneuve": "Circuito Gilles Villeneuve",
+      "yas_marina": "Circuito de Yas Marina",
+      "yeongam": "Circuito Internacional da Coreia",
+      "zandvoort": "Circuito de Zandvoort"
     }
   },
   "not_found": {

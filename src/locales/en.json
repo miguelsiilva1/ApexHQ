@@ -140,7 +140,19 @@
     "wins": "Wins",
     "fastest_laps": "Fastest Laps",
     "loading": "Loading standings...",
-    "error_load": "Error loading standings. Please try again."
+    "error_load": "Error loading standings. Please try again.",
+    "math": {
+      "title": "Title Fight",
+      "remaining": "{{races}} races and {{sprints}} sprints to go.",
+      "remaining_no_sprints": "{{races}} races to go.",
+      "available": "{{points}} pts still available",
+      "contenders_one": "{{count}} contender",
+      "contenders_other": "{{count}} contenders",
+      "clinched": "Mathematically crowned",
+      "champion": "Champion",
+      "match_point": "{{name}} can clinch the title as soon as next weekend.",
+      "bar_hint": "The bar compares the gap to the leader with the points still available: full = level with the leader."
+    }
   },
   "calendar": {
     "title": "Calendar",
@@ -203,7 +215,12 @@
     "stage": "Round"
   },
   "error": {
-    "retry": "Try Again"
+    "retry": "Try Again",
+    "default_title": "Something went wrong",
+    "default_msg": "An error occurred while processing your request. Check your internet connection and try again.",
+    "page_title": "This page failed to load",
+    "page_msg": "The site may have just been updated. Reload the page to get the latest version.",
+    "reload": "Reload"
   },
   "api": {
     "gps": {

@@ -72,13 +72,13 @@ const Calendario = () => {
       )}
 
       {loading ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {[...Array(6)].map((_, index) => (
             <div key={index} className="w-full bg-white/50 dark:bg-[#151515]/50 backdrop-blur-md h-[500px] rounded-2xl animate-pulse border border-gray-200 dark:border-gray-800"></div>
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {races.map((race, index) => (
             <Reveal key={race.round} index={index}>
               <RaceCard race={race} status={statuses[index]} />

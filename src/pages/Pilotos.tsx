@@ -8,7 +8,7 @@ import TeamCard, { type TeamEntry } from '../components/drivers/TeamCard';
 import DriverSearch from '../components/drivers/DriverSearch';
 import LegendCard from '../components/drivers/LegendCard';
 import { useF1Directory } from '../hooks/useF1Directory';
-import { legendDrivers, legendTeams } from '../data/legends';
+import { legendDrivers, legendTeams, legendTeamImages } from '../data/legends';
 import { driverChampions, constructorChampions, countTitles } from '../data/champions';
 import { CURRENT_SEASON } from '../data/f1Media';
 import Reveal from '../components/common/Reveal';
@@ -164,8 +164,9 @@ const Pilotos = () => {
                       to={`/equipas/${team.constructorId}`}
                       name={team.name}
                       nationality={team.nationality}
-                      wikiUrl={team.url}
+                      wikiUrl={legendTeamImages[team.constructorId] ?? team.url}
                       titles={countTitles(constructorChampions, team.constructorId)}
+                      landscape
                     />
                   </Reveal>
                 ))}

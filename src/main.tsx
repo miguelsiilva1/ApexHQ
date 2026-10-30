@@ -8,6 +8,7 @@ import MainLayout from './layouts/MainLayout'
 import { AuthProvider } from './components/AuthProvider'
 import { FavoritesProvider } from './components/FavoritesProvider'
 import Home from './pages/Home'
+import RouteError from './pages/RouteError'
 
 // Pages other than Home are split into their own chunks and loaded on first visit
 const page = (load: () => Promise<{ default: ComponentType }>) => async () => ({ Component: (await load()).default })
@@ -16,6 +17,8 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
+    // Catches render errors and lazy chunks that no longer exist after a deploy
+    errorElement: <RouteError />,
     // Shown while a lazy page loads on a direct visit
     hydrateFallbackElement: <div className="min-h-screen" />,
     children: [

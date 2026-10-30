@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { ExternalLink } from 'lucide-react';
 
-// TODO: replace with the creator's Linktree profile
-const LINKTREE_URL = 'https://linktr.ee/';
+const LINKTREE_URL = 'https://linktr.ee/miguelsiilva1';
 
 const AboutSection = () => {
   const { t } = useTranslation();
